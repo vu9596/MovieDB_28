@@ -28,6 +28,8 @@ public class MoviesViewModel {
 
     public final ObservableBoolean isLoadMore = new ObservableBoolean(false);
 
+    public final ObservableBoolean isLoadingSuccess = new ObservableBoolean();
+
     public MoviesViewModel(MovieRepository movieRepository, int loadBy, String key) {
         mLoadBy = loadBy;
         mMovieRepository = movieRepository;
@@ -66,6 +68,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -85,6 +88,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -121,6 +125,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -140,6 +145,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -159,6 +165,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -178,6 +185,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -197,6 +205,7 @@ public class MoviesViewModel {
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
                         isLoadMore.set(false);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -213,6 +222,7 @@ public class MoviesViewModel {
 
     private void handleError(String message) {
         isLoadMore.set(false);
+        isLoadingSuccess.set(true);
     }
 
     public void increaseCurrentPage() {
