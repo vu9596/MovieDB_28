@@ -2,17 +2,36 @@ package vunt.com.vn.moviedb_28.screen.moviedetail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Movie;
+import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
+import vunt.com.vn.moviedb_28.databinding.ActivityMovieDetailBinding;
+import vunt.com.vn.moviedb_28.screen.actors.ActorsFragment;
+import vunt.com.vn.moviedb_28.screen.movieinfo.InfoFragment;
+import vunt.com.vn.moviedb_28.screen.producer.ProduceFragment;
+import vunt.com.vn.moviedb_28.screen.trailers.TrailerFragment;
 
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
+
+    private MovieDetailViewModel mViewModel;
+    private ActivityMovieDetailBinding mBinding;
+
 
     public static Intent getMovieDetailIntent(Context context, Movie movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
@@ -25,6 +44,53 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
+        mViewModel = new MovieDetailViewModel(0, MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
+        mBinding.setViewModel(mViewModel);
+
+        initViews();
+    }
+
+    private void initViews() {
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        pagerAdapter.addFragment(new InfoFragment(),
+                getString(R.string.tab_title_information));
+        pagerAdapter.addFragment(new ActorsFragment(),
+                getString(R.string.tab_title_actor));
+        pagerAdapter.addFragment(new TrailerFragment(),
+                getString(R.string.tab_title_trailer));
+        pagerAdapter.addFragment(new ProduceFragment(),
+                getString(R.string.tab_title_producer));
+        viewPager.setAdapter(pagerAdapter);
+    }
+
+    public static class MainPagerAdapter extends FragmentPagerAdapter {
+        private List<Fragment> mFragments = new ArrayList<>();
+        private List<String> mTitles = new ArrayList<>();
+
+        public MainPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments != null ? mFragments.size() : 0;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles.get(position);
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragments.add(fragment);
+            mTitles.add(title);
+        }
     }
 }

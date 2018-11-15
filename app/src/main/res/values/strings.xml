@@ -10,4 +10,10 @@
     <string name="category_top_rate">TOP RATE</string>
     <string name="category_genres">GENRES</string>
     <string name="movie_name">Movie Name</string>
+    <string name="tab_title_information">Information</string>
+    <string name="tab_title_actor">Actor</string>
+    <string name="tab_title_trailer">Trailer</string>
+    <string name="tab_title_producer">Producer</string>
+    <string name="actor_name">Actor</string>
+    <string name="trailer_name">Trailer</string>
 </resources>

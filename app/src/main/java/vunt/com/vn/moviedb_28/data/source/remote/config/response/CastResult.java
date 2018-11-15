@@ -5,19 +5,18 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import vunt.com.vn.moviedb_28.data.model.Cast;
-import vunt.com.vn.moviedb_28.data.model.Video;
+import vunt.com.vn.moviedb_28.data.model.Actor;
 
 public class CastResult {
     @SerializedName("cast")
     @Expose
-    private List<Cast> mCasts;
+    private List<Actor> mCasts;
 
-    public List<Cast> getCasts() {
+    public List<Actor> getCasts() {
         return mCasts;
     }
 
-    public CastResult setCasts(List<Cast> casts) {
+    public CastResult setCasts(List<Actor> casts) {
         mCasts = casts;
         return this;
     }

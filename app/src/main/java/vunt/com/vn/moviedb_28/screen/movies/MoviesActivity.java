@@ -80,16 +80,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
         mViewModel.clear();
     }
 
-    private void setupAdapters() {
-        RecyclerView genresRecycler = mBinding.recycleGenre;
-        genresRecycler.setLayoutManager(mLayoutManager);
-        mAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
-        mAdapter.setItemClickListener(this);
-        genresRecycler.setAdapter(mAdapter);
-
-        setupScrollListener(genresRecycler);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -123,6 +113,16 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
         String title = "";
         title = getIntent().getBundleExtra(EXTRAS_ARGS).getString(HomeViewModel.BUNDLE_NAME);
         return title;
+    }
+
+    private void setupAdapters() {
+        RecyclerView genresRecycler = mBinding.recycleGenre;
+        genresRecycler.setLayoutManager(mLayoutManager);
+        mAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
+        mAdapter.setItemClickListener(this);
+        genresRecycler.setAdapter(mAdapter);
+
+        setupScrollListener(genresRecycler);
     }
 
     private void setupScrollListener(RecyclerView genresRecycler) {
