@@ -13,14 +13,13 @@ import vunt.com.vn.moviedb_28.util.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String HOME_VIEWMODEL_TAG = "HOME_VIEWMODEL_TAG";
-    public static final String FAVORITE_VIEWMODEL_TAG = "FAVORITE_VIEWMODEL_TAG";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBottomNavigationView();
+        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                new HomeFragment(), R.id.frame_fragments_container);
     }
 
     private void setupBottomNavigationView() {
@@ -38,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.navigation_home:
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                                        new HomeFragment(), HOME_VIEWMODEL_TAG);
+                                        new HomeFragment(), R.id.frame_fragments_container);
                                 break;
                             case R.id.navigation_my_fovorities:
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                                        new FavoriteFragment(), FAVORITE_VIEWMODEL_TAG);
+                                        new FavoriteFragment(), R.id.frame_fragments_container);
                             case R.id.navigation_my_search:
                                 break;
                             default:

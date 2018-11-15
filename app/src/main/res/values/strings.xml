@@ -3,4 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_my_movie">Favorities</string>
     <string name="title_search">Search</string>
+    <string name="category_popular">POPULAR</string>
+    <string name="view_more">View more</string>
+    <string name="category_now_playing">NOW PLAYING</string>
+    <string name="category_up_coming">UP COMING</string>
+    <string name="category_top_rate">TOP RATE</string>
+    <string name="category_genres">GENRES</string>
+    <string name="movie_name">Movie Name</string>
 </resources>
