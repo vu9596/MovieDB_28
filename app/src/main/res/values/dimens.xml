@@ -14,4 +14,5 @@
     <dimen name="dp_125">125dp</dimen>
     <dimen name="dp_160">160dp</dimen>
     <dimen name="dp_170">170dp</dimen>
+    <dimen name="dp_32">32dp</dimen>
 </resources>

@@ -38,6 +38,11 @@ public class HomeFragment extends Fragment implements HomeNavigator,
             mUpComingAdapter, mTopRateAdapter;
     private GenresAdapter mGenresAdapter;
 
+    public static HomeFragment newInstance() {
+        HomeFragment fragment = new HomeFragment();
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

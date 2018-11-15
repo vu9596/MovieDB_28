@@ -30,6 +30,11 @@ public class FavoriteFragment extends Fragment
 
     private CategoriesAdapter mFavoriteAdapter;
 
+    public static FavoriteFragment newInstance() {
+        FavoriteFragment fragment = new FavoriteFragment();
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -42,6 +47,10 @@ public class FavoriteFragment extends Fragment
         setupAdapters();
 
         return mBinding.getRoot();
+    }
+
+    public FavoritiesViewModel getViewModel() {
+        return mViewModel;
     }
 
     private void setupAdapters() {
@@ -67,6 +76,7 @@ public class FavoriteFragment extends Fragment
 
     @Override
     public void onDeleteFavoritiesClick(Movie movie) {
+        mViewModel.deleteFavoriteMovie(movie);
     }
 
     @Override
