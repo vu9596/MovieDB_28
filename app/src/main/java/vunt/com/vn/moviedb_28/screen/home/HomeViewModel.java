@@ -3,6 +3,7 @@ package vunt.com.vn.moviedb_28.screen.home;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -19,7 +20,13 @@ import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.util.Constant;
 
-public class HomeViewModel extends BaseObservable {
+public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemClickListener {
+
+    public static final String BUNDLE_SOURCE = "BUNDLE_SOURCE";
+    public static final String BUNDLE_KEY = "BUNDLE_KEY";
+    public static final String BUNDLE_NAME = "BUNDLE_NAME";
+    public static final int GENRE_SOURCE = 0;
+    public static final int CATEGORY_SOURCE = 1;
 
     public ObservableBoolean mIsLoadMorePopular = new ObservableBoolean();
     public ObservableBoolean mIsLoadMoreNowPlaying = new ObservableBoolean();
@@ -42,9 +49,43 @@ public class HomeViewModel extends BaseObservable {
     private ObservableField<List<Movie>> mTopRateMovies = new ObservableField<>();
     private ObservableField<List<Genre>> mGenres = new ObservableField<>();
 
+    private HomeNavigator mNavigator;
+
     public HomeViewModel(MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
         initData();
+    }
+
+    public LinearLayoutManager getGenresLayoutManager() {
+        return mGenresLayoutManager;
+    }
+
+    public void setGenresLayoutManager(LinearLayoutManager genresLayoutManager) {
+        mGenresLayoutManager = genresLayoutManager;
+    }
+
+    public ObservableField<List<Movie>> getPopularMovies() {
+        return mPopularMovies;
+    }
+
+    public ObservableField<List<Movie>> getNowPlayingMovies() {
+        return mNowPlayingMovies;
+    }
+
+    public ObservableField<List<Movie>> getUpComingMovies() {
+        return mUpComingMovies;
+    }
+
+    public ObservableField<List<Movie>> getTopRateMovies() {
+        return mTopRateMovies;
+    }
+
+    public ObservableField<List<Genre>> getGenres() {
+        return mGenres;
+    }
+
+    public void setNavigator(HomeNavigator navigator) {
+        mNavigator = navigator;
     }
 
     public void initData() {
@@ -165,34 +206,6 @@ public class HomeViewModel extends BaseObservable {
         mCompositeDisposable.add(disposable);
     }
 
-    public LinearLayoutManager getGenresLayoutManager() {
-        return mGenresLayoutManager;
-    }
-
-    public void setGenresLayoutManager(LinearLayoutManager genresLayoutManager) {
-        mGenresLayoutManager = genresLayoutManager;
-    }
-
-    public ObservableField<List<Movie>> getPopularMovies() {
-        return mPopularMovies;
-    }
-
-    public ObservableField<List<Movie>> getNowPlayingMovies() {
-        return mNowPlayingMovies;
-    }
-
-    public ObservableField<List<Movie>> getUpComingMovies() {
-        return mUpComingMovies;
-    }
-
-    public ObservableField<List<Movie>> getTopRateMovies() {
-        return mTopRateMovies;
-    }
-
-    public ObservableField<List<Genre>> getGenres() {
-        return mGenres;
-    }
-
     public void onClickLoadMoreNowPlaying(View view) {
         mNowPlayingMovies.get().addAll(mMoreUpComingMovies);
         mIsLoadMoreNowPlaying.set(true);
@@ -219,5 +232,26 @@ public class HomeViewModel extends BaseObservable {
 
     private void handleError(String message) {
         //TODO handle error
+    }
+
+    public void onCategoryClick(View view, String key, String name) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_SOURCE, CATEGORY_SOURCE);
+        bundle.putString(BUNDLE_KEY, key);
+        bundle.putString(BUNDLE_NAME, name);
+        mNavigator.showListMovies(bundle);
+    }
+
+    public GenresAdapter.ItemClickListener getItemClickListener() {
+        return this;
+    }
+
+    @Override
+    public void onItemClick(Genre genre) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_SOURCE, GENRE_SOURCE);
+        bundle.putString(BUNDLE_KEY, String.valueOf(genre.getId()));
+        bundle.putString(BUNDLE_NAME, genre.getName());
+        mNavigator.showListMovies(bundle);
     }
 }
