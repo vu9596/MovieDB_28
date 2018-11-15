@@ -20,6 +20,11 @@ public class TrailerFragment extends BaseFragment implements TrailerAdapter.Item
     private FragmentTrailerBinding mBinding;
     private OnTrailerSelectedListener mListener;
 
+    public static TrailerFragment newInstance() {
+        TrailerFragment fragment = new TrailerFragment();
+        return fragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

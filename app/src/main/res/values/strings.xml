@@ -17,4 +17,13 @@
     <string name="actor_name">Actor</string>
     <string name="trailer_name">Trailer</string>
     <string name="favorities">FAVOVITIES</string>
+    <string name="results">results</string>
+    <string name="search_hint">keyword...</string>
+    <string name="default_search_result">0</string>
+    <string name="search_by">SEARCH BY</string>
+    <string name="radio_keyword">Keyword</string>
+    <string name="radio_movie">Movie</string>
+    <string name="radio_category">Category</string>
+    <string name="radio_genre">Genre</string>
+    <string name="search_option">Search Options</string>
 </resources>

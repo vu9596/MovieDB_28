@@ -14,12 +14,16 @@ import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Actor;
 import vunt.com.vn.moviedb_28.databinding.FragmentActorBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
-import vunt.com.vn.moviedb_28.screen.producer.ProduceFragment;
 
 public class ActorsFragment extends BaseFragment implements ActorsAdapter.ItemClickListener {
 
     private FragmentActorBinding mBinding;
     private OnActorSelectedListener mListener;
+
+    public static ActorsFragment newInstance() {
+        ActorsFragment fragment = new ActorsFragment();
+        return fragment;
+    }
 
     @Override
     public void onAttach(Context context) {

@@ -23,6 +23,11 @@ public class InfoFragment extends BaseFragment
         implements GenresDetailAdapter.ItemClickListener, InfoNavigator {
     private FragmentInfoBinding mBinding;
 
+    public static InfoFragment newInstance() {
+        InfoFragment fragment = new InfoFragment();
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

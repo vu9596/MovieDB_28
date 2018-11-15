@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.screen.favorities.FavoriteFragment;
 import vunt.com.vn.moviedb_28.screen.home.HomeFragment;
+import vunt.com.vn.moviedb_28.screen.search.SearchFragment;
 import vunt.com.vn.moviedb_28.util.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBottomNavigationView();
+        mCurrentFrgment = HomeFragment.newInstance();
         ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                new HomeFragment(), R.id.frame_fragments_container);
+                mCurrentFrgment, R.id.frame_fragments_container);
     }
 
     @Override
@@ -54,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
                                 mCurrentFrgment = FavoriteFragment.newInstance();
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                                         mCurrentFrgment, R.id.frame_fragments_container);
+                                break;
                             case R.id.navigation_my_search:
+                                mCurrentFrgment = SearchFragment.newInstance();
+                                ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                                        mCurrentFrgment, R.id.frame_fragments_container);
                                 break;
                             default:
                                 break;
