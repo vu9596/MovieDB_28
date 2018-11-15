@@ -18,9 +18,15 @@ public class MovieDetailViewModel {
 
     private OnChangeVideoListener mOnChangeVideoListener;
 
+    private MovieDetailNavigator mNavigator;
+
     public MovieDetailViewModel(int movieId, MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
         loadMovie(movieId);
+    }
+
+    public void setNavigator(MovieDetailNavigator navigator) {
+        mNavigator = navigator;
     }
 
     public void setOnChangeVideoListener(OnChangeVideoListener listener) {
@@ -55,6 +61,10 @@ public class MovieDetailViewModel {
 
     private void handleError(String message) {
         //TODO handle error
+    }
+
+    public void back() {
+        mNavigator.back();
     }
 
     public void clear() {

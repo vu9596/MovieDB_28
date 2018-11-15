@@ -14,6 +14,8 @@ import vunt.com.vn.moviedb_28.databinding.ItemGenreDetailBinding;
 
 public class GenresDetailAdapter extends RecyclerView.Adapter<GenresDetailAdapter.ViewHolder> {
     private List<Genre> mGenres;
+    private ItemClickListener mItemClickListener;
+
 
     public GenresDetailAdapter(List<Genre> genres) {
         mGenres = genres;
@@ -28,7 +30,7 @@ public class GenresDetailAdapter extends RecyclerView.Adapter<GenresDetailAdapte
                 viewGroup,
                 false
         );
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, mItemClickListener);
     }
 
     @Override
@@ -41,6 +43,11 @@ public class GenresDetailAdapter extends RecyclerView.Adapter<GenresDetailAdapte
         return mGenres != null ? mGenres.size() : 0;
     }
 
+    public GenresDetailAdapter setItemClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+        return this;
+    }
+
     public void replaceData(List<Genre> genres) {
         mGenres.clear();
         mGenres.addAll(genres);
@@ -51,10 +58,10 @@ public class GenresDetailAdapter extends RecyclerView.Adapter<GenresDetailAdapte
         private ItemGenreDetailBinding mBinding;
         private ItemGenreDetailViewModel mItemGenreDetailViewModel;
 
-        public ViewHolder(ItemGenreDetailBinding binding) {
+        public ViewHolder(ItemGenreDetailBinding binding, ItemClickListener listener) {
             super(binding.getRoot());
             mBinding = binding;
-            mItemGenreDetailViewModel = new ItemGenreDetailViewModel();
+            mItemGenreDetailViewModel = new ItemGenreDetailViewModel(listener);
             mBinding.setViewModel(mItemGenreDetailViewModel);
         }
 
@@ -62,5 +69,9 @@ public class GenresDetailAdapter extends RecyclerView.Adapter<GenresDetailAdapte
             mItemGenreDetailViewModel.setGenre(genre);
             mBinding.executePendingBindings();
         }
+    }
+
+    public interface ItemClickListener {
+        void onGenreItemClick(Genre genre);
     }
 }

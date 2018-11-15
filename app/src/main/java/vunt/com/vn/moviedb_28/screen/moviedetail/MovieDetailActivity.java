@@ -25,7 +25,8 @@ import vunt.com.vn.moviedb_28.screen.trailers.TrailerFragment;
 
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
 
-public class MovieDetailActivity extends AppCompatActivity implements OnChangeVideoListener {
+public class MovieDetailActivity extends AppCompatActivity
+        implements OnChangeVideoListener, MovieDetailNavigator {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
 
@@ -50,6 +51,7 @@ public class MovieDetailActivity extends AppCompatActivity implements OnChangeVi
         mViewModel = new MovieDetailViewModel(Integer.valueOf(mMovieId),
                 MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
         mViewModel.setOnChangeVideoListener(this);
+        mViewModel.setNavigator(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         mBinding.setViewModel(mViewModel);
         initViews();
@@ -87,6 +89,11 @@ public class MovieDetailActivity extends AppCompatActivity implements OnChangeVi
         produceFragment.setViewModel(mViewModel);
         pagerAdapter.addFragment(produceFragment, getString(R.string.tab_title_producer));
         viewPager.setAdapter(pagerAdapter);
+    }
+
+    @Override
+    public void back() {
+        this.finish();
     }
 
     public static class MainPagerAdapter extends FragmentPagerAdapter {
