@@ -18,6 +18,8 @@ import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.data.source.local.FavoriteReaderDbHelper;
+import vunt.com.vn.moviedb_28.data.source.local.MovieLocalDataSource;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.FragmentHomeBinding;
 import vunt.com.vn.moviedb_28.screen.moviedetail.MovieDetailActivity;
@@ -78,6 +80,11 @@ public class HomeFragment extends Fragment implements HomeNavigator,
         showMovieDetail(movie);
     }
 
+    @Override
+    public void onDeleteFavoritiesClick(Movie movie) {
+
+    }
+
     private void setupAdapters() {
         RecyclerView popularRecycler = mBinding.recyclerPopular;
         mPopularAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
@@ -115,8 +122,10 @@ public class HomeFragment extends Fragment implements HomeNavigator,
     }
 
     private void initViewModel() {
+        FavoriteReaderDbHelper dbHelper = new FavoriteReaderDbHelper(getContext());
         MovieRepository movieRepository = MovieRepository.getInstance(
-                MovieRemoteDataSource.getInstance());
+                MovieRemoteDataSource.getInstance(),
+                MovieLocalDataSource.getInstance(dbHelper));
         mViewModel = new HomeViewModel(movieRepository);
     }
 }

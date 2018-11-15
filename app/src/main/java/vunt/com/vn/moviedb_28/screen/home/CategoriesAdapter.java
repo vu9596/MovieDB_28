@@ -16,6 +16,7 @@ import vunt.com.vn.moviedb_28.util.Constant;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
     private List<Movie> mMovies;
     private ItemClickListener mItemClickListener;
+    private boolean mIsFavorities;
 
     public CategoriesAdapter(List<Movie> movies) {
         mMovies = movies;
@@ -30,7 +31,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                 viewGroup,
                 false
         );
-        return new ViewHolder(binding, mItemClickListener);
+        return new ViewHolder(binding, mIsFavorities, mItemClickListener);
     }
 
     @Override
@@ -48,14 +49,21 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         return this;
     }
 
+    public CategoriesAdapter setFavorities(boolean favorities) {
+        mIsFavorities = favorities;
+        return this;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ItemMovieBinding mBinding;
         private ItemMovieListViewModel mItemMovieListViewModel;
 
-        public ViewHolder(ItemMovieBinding binding, ItemClickListener listener) {
+        public ViewHolder(ItemMovieBinding binding, boolean isFavorities,
+                          ItemClickListener listener) {
             super(binding.getRoot());
             mBinding = binding;
             mItemMovieListViewModel = new ItemMovieListViewModel(listener);
+            mItemMovieListViewModel.setIsFavotities(isFavorities);
             mBinding.setViewModel(mItemMovieListViewModel);
         }
 
@@ -84,5 +92,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     public interface ItemClickListener {
         void onMovieItemClick(Movie movie);
+
+        void onDeleteFavoritiesClick(Movie movie);
     }
 }

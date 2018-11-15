@@ -16,6 +16,8 @@ import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.data.source.local.FavoriteReaderDbHelper;
+import vunt.com.vn.moviedb_28.data.source.local.MovieLocalDataSource;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMoviesBinding;
 import vunt.com.vn.moviedb_28.screen.home.CategoriesAdapter;
@@ -66,11 +68,7 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getIntent().getBundleExtra(EXTRAS_ARGS);
-        mViewModel = new MoviesViewModel(
-                MovieRepository.getInstance(MovieRemoteDataSource.getInstance()),
-                bundle.getInt(HomeViewModel.BUNDLE_SOURCE),
-                bundle.getString(HomeViewModel.BUNDLE_KEY));
+        initViewModel();
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movies);
         mBinding.setViewModel(mViewModel);
@@ -106,6 +104,11 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
     @Override
     public void onMovieItemClick(Movie movie) {
         showMovieDetail(movie);
+    }
+
+    @Override
+    public void onDeleteFavoritiesClick(Movie movie) {
+
     }
 
     private void setupToolbar() {
@@ -156,5 +159,15 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
                 }
             }
         });
+    }
+
+    private void initViewModel() {
+        FavoriteReaderDbHelper dbHelper = new FavoriteReaderDbHelper(this);
+        Bundle bundle = getIntent().getBundleExtra(EXTRAS_ARGS);
+        mViewModel = new MoviesViewModel(
+                MovieRepository.getInstance(MovieRemoteDataSource.getInstance(),
+                        MovieLocalDataSource.getInstance(dbHelper)),
+                bundle.getInt(HomeViewModel.BUNDLE_SOURCE),
+                bundle.getString(HomeViewModel.BUNDLE_KEY));
     }
 }
