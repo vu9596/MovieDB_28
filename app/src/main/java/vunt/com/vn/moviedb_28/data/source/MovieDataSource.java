@@ -24,6 +24,8 @@ public interface MovieDataSource {
         Single<List<Movie>> getTopRate(int page);
 
         Single<List<Genre>> getGenres();
+
+        Single<List<Movie>> getMoviesByGenre(int page, String genreId);
     }
 
 }

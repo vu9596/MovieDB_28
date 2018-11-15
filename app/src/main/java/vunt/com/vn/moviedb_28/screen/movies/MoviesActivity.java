@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Movie;
+import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMoviesBinding;
 import vunt.com.vn.moviedb_28.screen.home.CategoriesAdapter;
 import vunt.com.vn.moviedb_28.screen.home.HomeViewModel;
@@ -33,6 +35,7 @@ public class MoviesActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getBundleExtra(EXTRAS_ARGS);
         mViewModel = new MoviesViewModel(
+                MovieRepository.getInstance(MovieRemoteDataSource.getInstance()),
                 bundle.getInt(HomeViewModel.BUNDLE_SOURCE),
                 bundle.getString(HomeViewModel.BUNDLE_KEY));
 
@@ -42,6 +45,12 @@ public class MoviesActivity extends AppCompatActivity {
         setupToolbar();
 
         setupAdapters();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mViewModel.clear();
     }
 
     private void setupAdapters() {

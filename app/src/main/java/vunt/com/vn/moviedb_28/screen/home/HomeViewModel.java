@@ -60,7 +60,7 @@ public class HomeViewModel extends BaseObservable {
 
     public void initData() {
         loadPopularMovies();
-        laodNowPlayingMovies();
+        loadNowPlayingMovies();
         loadUpComingMovies();
         loadTopRateMovies();
         loadGenre();
@@ -72,12 +72,12 @@ public class HomeViewModel extends BaseObservable {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Genre>>() {
                     @Override
-                    public void accept(List<Genre> genres) throws Exception {
+                    public void accept(List<Genre> genres) {
                         genresObservable.addAll(genres);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         handleError(throwable.getMessage());
                     }
                 });
@@ -90,7 +90,7 @@ public class HomeViewModel extends BaseObservable {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(List<Movie> movies) throws Exception {
+                    public void accept(List<Movie> movies) {
                         topRateMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
@@ -100,7 +100,7 @@ public class HomeViewModel extends BaseObservable {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         handleError(throwable.getMessage());
                     }
                 });
@@ -113,7 +113,7 @@ public class HomeViewModel extends BaseObservable {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(List<Movie> movies) throws Exception {
+                    public void accept(List<Movie> movies) {
                         upComingMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
@@ -123,20 +123,20 @@ public class HomeViewModel extends BaseObservable {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         handleError(throwable.getMessage());
                     }
                 });
         mCompositeDisposable.add(disposable);
     }
 
-    private void laodNowPlayingMovies() {
+    private void loadNowPlayingMovies() {
         Disposable disposable = mMovieRepository.getNowPlaying(Constant.FIRST_PAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(List<Movie> movies) throws Exception {
+                    public void accept(List<Movie> movies) {
                         nowPlayingMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
@@ -146,7 +146,7 @@ public class HomeViewModel extends BaseObservable {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         handleError(throwable.getMessage());
                     }
                 });
@@ -159,7 +159,7 @@ public class HomeViewModel extends BaseObservable {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(List<Movie> movies) throws Exception {
+                    public void accept(List<Movie> movies) {
                         popularMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
@@ -169,7 +169,7 @@ public class HomeViewModel extends BaseObservable {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
+                    public void accept(Throwable throwable) {
                         handleError(throwable.getMessage());
                     }
                 });
