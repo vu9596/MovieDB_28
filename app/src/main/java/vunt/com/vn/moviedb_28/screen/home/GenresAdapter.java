@@ -76,6 +76,6 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder
     }
 
     public interface ItemClickListener {
-        void onItemClick (Genre genre);
+        void onGenreItemClick(Genre genre);
     }
 }

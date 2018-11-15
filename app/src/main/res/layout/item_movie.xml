@@ -18,7 +18,8 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_80"
-            android:background="@color/home_background">
+            android:background="@color/home_background"
+            android:onClick="@{viewModel::onItemClicked}">
 
             <ImageView
                 android:id="@+id/image_movie"
