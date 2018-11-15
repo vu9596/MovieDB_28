@@ -7,7 +7,7 @@ import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 
 public class MovieDetailViewModel {
-    public final ObservableField<Movie> mMovieObservable = new ObservableField<>();
+    public final ObservableField<Movie> movieObservable = new ObservableField<>();
     private MovieRepository mMovieRepository;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -20,6 +20,6 @@ public class MovieDetailViewModel {
     }
 
     public Movie getMovie() {
-        return mMovieObservable.get();
+        return movieObservable.get();
     }
 }
