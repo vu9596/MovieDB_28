@@ -10,20 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import vunt.com.vn.moviedb_28.R;
-import vunt.com.vn.moviedb_28.data.model.Genre;
-import vunt.com.vn.moviedb_28.data.model.Movie;
+import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel mViewModel;
-    private CategoriesAdapter mPopularAdapter, mNowPlayingAdapter,
-            mTopRateAdapter, mUpComingAdapter;
-    private GenresAdapter mGenresAdapter;
 
     @Nullable
     @Override
@@ -46,19 +40,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initViewModel() {
-        List<Movie> popularMovie = new ArrayList<>();
-        List<Movie> toprateMovie = new ArrayList<>();
-        List<Movie> upComingMovie = new ArrayList<>();
-        List<Movie> nowPlayingMovie = new ArrayList<>();
-        List<Genre> genres = new ArrayList<>();
+        MovieRepository movieRepository = MovieRepository.getInstance(
+                MovieRemoteDataSource.getInstance());
+        mViewModel = new HomeViewModel(movieRepository);
+    }
 
-        mPopularAdapter = new CategoriesAdapter(popularMovie);
-        mNowPlayingAdapter = new CategoriesAdapter(nowPlayingMovie);
-        mTopRateAdapter = new CategoriesAdapter(toprateMovie);
-        mUpComingAdapter = new CategoriesAdapter(upComingMovie);
-        mGenresAdapter = new GenresAdapter(genres);
-
-        mViewModel = new HomeViewModel(mPopularAdapter,
-                mNowPlayingAdapter, mTopRateAdapter, mUpComingAdapter, mGenresAdapter);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mViewModel.clear();
     }
 }

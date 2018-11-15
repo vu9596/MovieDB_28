@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="viewModel"
             type="vunt.com.vn.moviedb_28.screen.home.HomeViewModel" />
@@ -46,11 +47,11 @@
                 android:id="@+id/recycler_popular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:bindMovies="@{viewModel.popularMovies}"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_popular"
-                app:recyclerAdapter="@{viewModel.popularAdapter}" />
+                app:layout_constraintTop_toBottomOf="@+id/text_popular" />
 
             <ImageView
                 android:id="@+id/image_load_more_popular"
@@ -58,12 +59,12 @@
                 android:layout_height="@dimen/dp_36"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@color/color_brighter_black"
+                android:onClick="@{viewModel::onClickLoadMorePopular}"
                 android:padding="@dimen/dp_4"
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_popular"
-                android:onClick="@{viewModel::onClickLoadMorePopular}"
                 app:setVisibility="@{!viewModel.mIsLoadMorePopular}" />
 
             <TextView
@@ -104,11 +105,11 @@
                 android:id="@+id/recycler_now_playing"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:bindMovies="@{viewModel.nowPlayingMovies}"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_now_playing"
-                app:recyclerAdapter="@{viewModel.nowPlayingAdapter}" />
+                app:layout_constraintTop_toBottomOf="@id/text_now_playing" />
 
             <ImageView
                 android:id="@+id/image_load_more_now_playing"
@@ -116,12 +117,12 @@
                 android:layout_height="@dimen/dp_36"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@color/color_brighter_black"
+                android:onClick="@{viewModel::onClickLoadMoreNowPlaying}"
                 android:padding="@dimen/dp_4"
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_now_playing"
-                android:onClick="@{viewModel::onClickLoadMoreNowPlaying}"
                 app:setVisibility="@{!viewModel.mIsLoadMoreNowPlaying}" />
 
             <TextView
@@ -162,11 +163,11 @@
                 android:id="@+id/recycler_up_coming"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:bindMovies="@{viewModel.upComingMovies}"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_up_coming"
-                app:recyclerAdapter="@{viewModel.upComingAdapter}" />
+                app:layout_constraintTop_toBottomOf="@id/text_up_coming" />
 
             <ImageView
                 android:id="@+id/image_load_more_up_coming"
@@ -174,12 +175,12 @@
                 android:layout_height="@dimen/dp_36"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@color/color_brighter_black"
+                android:onClick="@{viewModel::onClickLoadMoreUpComing}"
                 android:padding="@dimen/dp_4"
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_up_coming"
-                android:onClick="@{viewModel::onClickLoadMoreUpComing}"
                 app:setVisibility="@{!viewModel.mIsLoadMoreUpComing}" />
 
             <TextView
@@ -220,11 +221,11 @@
                 android:id="@+id/recycler_top_rate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:bindMovies="@{viewModel.topRateMovies}"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_top_rate"
-                app:recyclerAdapter="@{viewModel.topRateAdapter}" />
+                app:layout_constraintTop_toBottomOf="@id/text_top_rate" />
 
             <ImageView
                 android:id="@+id/image_load_more_top_rate"
@@ -232,12 +233,12 @@
                 android:layout_height="@dimen/dp_36"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@color/color_brighter_black"
+                android:onClick="@{viewModel::onClickLoadMoreTopRate}"
                 android:padding="@dimen/dp_4"
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_top_rate"
-                android:onClick="@{viewModel::onClickLoadMoreTopRate}"
                 app:setVisibility="@{!viewModel.mIsLoadMoreTopRate}" />
 
             <TextView
@@ -278,23 +279,11 @@
                 android:id="@+id/recycler_genres"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_genres"
+                app:bindGenres="@{viewModel.genres}"
                 app:layoutManager="@{viewModel.genresLayoutManager}"
-                app:recyclerAdapter="@{viewModel.genresAdapter}" />
-
-            <TextView
-                android:id="@+id/text_view_more_genres"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_30"
-                android:layout_marginTop="@dimen/dp_8"
-                android:padding="@dimen/dp_4"
-                android:text="@string/view_more"
-                android:textColor="@color/color_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler_genres" />
+                app:layout_constraintTop_toBottomOf="@id/text_genres" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
