@@ -1,5 +1,6 @@
 package vunt.com.vn.moviedb_28.screen.trailers;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,17 @@ import vunt.com.vn.moviedb_28.screen.BaseFragment;
 public class TrailerFragment extends BaseFragment implements TrailerAdapter.ItemClickListener {
 
     private FragmentTrailerBinding mBinding;
+    private OnTrailerSelectedListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnTrailerSelectedListener) context;
+        } catch (ClassCastException e) {
+            handleError(e.getMessage());
+        }
+    }
 
     @Nullable
     @Override
@@ -33,5 +45,14 @@ public class TrailerFragment extends BaseFragment implements TrailerAdapter.Item
 
     @Override
     public void onTrailerItemClick(Video video) {
+        mListener.onTrailerSelected(video);
+    }
+
+    private void handleError(String message) {
+        //TODO handle error
+    }
+
+    public interface OnTrailerSelectedListener {
+        public void onTrailerSelected(Video video);
     }
 }

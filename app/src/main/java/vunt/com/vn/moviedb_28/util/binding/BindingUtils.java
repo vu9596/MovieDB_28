@@ -8,9 +8,13 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import java.util.List;
 
+import vunt.com.vn.moviedb_28.BuildConfig;
 import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Actor;
 import vunt.com.vn.moviedb_28.data.model.Company;
@@ -129,5 +133,43 @@ public class BindingUtils {
         if (adapter != null && genres != null) {
             adapter.replaceData(genres);
         }
+    }
+
+    @BindingAdapter("app:youTubeThumbnailView")
+    public static void setYouTubeThumbnailViewForTrailer(YouTubeThumbnailView thumbnailView,
+                                                         final String videoKey) {
+        if (videoKey == null) {
+            thumbnailView.setImageResource(R.drawable.ic_play_circle);
+            return;
+        }
+        YouTubeThumbnailView.OnInitializedListener listener =
+                new YouTubeThumbnailView.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubeThumbnailView view,
+                                                        final YouTubeThumbnailLoader loader) {
+                        loader.setVideo(videoKey);
+                        loader.setOnThumbnailLoadedListener(
+                                new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                            @Override
+                            public void onThumbnailLoaded(
+                                    YouTubeThumbnailView youTubeThumbnailView, String s) {
+                                loader.release();
+                            }
+
+                            @Override
+                            public void onThumbnailError(YouTubeThumbnailView view,
+                                                         YouTubeThumbnailLoader.ErrorReason error) {
+                                //TODO Handle load thumbnail error
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onInitializationFailure(YouTubeThumbnailView view,
+                                                        YouTubeInitializationResult result) {
+                        //TODO Handle init error
+                    }
+                };
+        thumbnailView.initialize(BuildConfig.YOUTUBE_API_KEY, listener);
     }
 }
