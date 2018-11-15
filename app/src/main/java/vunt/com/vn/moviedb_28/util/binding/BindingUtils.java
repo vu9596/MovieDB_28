@@ -1,7 +1,6 @@
 package vunt.com.vn.moviedb_28.util.binding;
 
 import android.databinding.BindingAdapter;
-import android.databinding.ObservableField;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -20,25 +19,22 @@ import vunt.com.vn.moviedb_28.util.StringUtils;
 public class BindingUtils {
     private static final int IMAGE_SIZE_200 = 200;
 
-    @BindingAdapter({"bindMovies"})
+    @BindingAdapter({"app:bindMovies"})
     public static void setMoviesForRecyclerView(RecyclerView recyclerView,
-                                                ObservableField<List<Movie>> observableField) {
-        if (recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() == 0) {
-            CategoriesAdapter adapter = new CategoriesAdapter(observableField.get());
-            recyclerView.setAdapter(adapter);
-            return;
-        }
+                                                List<Movie> movies) {
         CategoriesAdapter adapter = (CategoriesAdapter) recyclerView.getAdapter();
-        adapter.addData(observableField.get());
+        if (adapter != null) {
+            adapter.replaceData(movies);
+        }
     }
 
-    @BindingAdapter(value = {"bindGenres", "bindItemClick"}, requireAll = false)
+    @BindingAdapter("app:bindGenres")
     public static void setGenresForRecyclerView(RecyclerView recyclerView,
-                                                ObservableField<List<Genre>> observableField,
-                                                GenresAdapter.ItemClickListener listener) {
-        GenresAdapter adapter = new GenresAdapter(observableField.get());
-        adapter.setItemClickListener(listener);
-        recyclerView.setAdapter(adapter);
+                                                List<Genre> genres) {
+        GenresAdapter adapter = (GenresAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.replaceData(genres);
+        }
     }
 
     @BindingAdapter({"layoutManager"})
@@ -65,5 +61,12 @@ public class BindingUtils {
         Glide.with(imageView.getContext())
                 .load(imageLink)
                 .into(imageView);
+    }
+
+    @BindingAdapter("android:scaleType")
+    public static void setScaleType(ImageView imageView, String backdropPath) {
+        if (backdropPath.isEmpty() || backdropPath == null) {
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
     }
 }

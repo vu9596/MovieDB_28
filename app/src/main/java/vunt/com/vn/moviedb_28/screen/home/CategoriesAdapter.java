@@ -1,6 +1,5 @@
 package vunt.com.vn.moviedb_28.screen.home;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
