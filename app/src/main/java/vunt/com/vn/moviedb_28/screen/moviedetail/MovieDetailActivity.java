@@ -14,8 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.data.model.Actor;
+import vunt.com.vn.moviedb_28.data.model.Company;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
+import vunt.com.vn.moviedb_28.data.model.Video;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMovieDetailBinding;
@@ -27,10 +30,11 @@ import vunt.com.vn.moviedb_28.screen.producer.ProduceFragment;
 import vunt.com.vn.moviedb_28.screen.trailers.TrailerFragment;
 
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
-import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.PRODUCE_SOURCE;
 
 public class MovieDetailActivity extends AppCompatActivity
-        implements OnChangeVideoListener, MovieDetailNavigator {
+        implements OnChangeVideoListener, MovieDetailNavigator,
+        ProduceFragment.OnProduceSelectedListener {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
 
@@ -98,6 +102,32 @@ public class MovieDetailActivity extends AppCompatActivity
     @Override
     public void back() {
         this.finish();
+    }
+
+    @Override
+    public void showMovies(Actor actor, int getBy) {
+
+    }
+
+    @Override
+    public void showMovies(Genre genre, int getBy) {
+
+    }
+
+    @Override
+    public void showMovies(Company company, int getBy) {
+        Genre genre = new Genre(String.valueOf(company.getId()), company.getName());
+        startActivity(MoviesActivity.getMoviesIntent(this, genre, getBy));
+    }
+
+    @Override
+    public void showMovies(Video video, int getBy) {
+
+    }
+
+    @Override
+    public void onProduceSelected(Company company) {
+        showMovies(company, PRODUCE_SOURCE);
     }
 
     public static class MainPagerAdapter extends FragmentPagerAdapter {

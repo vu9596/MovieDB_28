@@ -27,6 +27,7 @@ import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_NAME;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.CATEGORY_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.PRODUCE_SOURCE;
 
 public class MoviesActivity extends AppCompatActivity implements MoviesNavigator,
         CategoriesAdapter.ItemClickListener {
@@ -47,6 +48,8 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
         Bundle bundle = new Bundle();
         if (getBy == GENRE_SOURCE) {
             bundle.putInt(BUNDLE_SOURCE, GENRE_SOURCE);
+        } else if (getBy == PRODUCE_SOURCE) {
+            bundle.putInt(BUNDLE_SOURCE, PRODUCE_SOURCE);
         } else {
             bundle.putInt(BUNDLE_SOURCE, CATEGORY_SOURCE);
         }

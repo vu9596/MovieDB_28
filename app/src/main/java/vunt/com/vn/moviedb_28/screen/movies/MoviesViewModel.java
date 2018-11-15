@@ -46,7 +46,30 @@ public class MoviesViewModel {
             loadMoviesByGenre();
             return;
         }
+        if (loadBy == HomeViewModel.PRODUCE_SOURCE) {
+            loadMoviesByProduce();
+            return;
+        }
         loadMoviesByCategory();
+    }
+
+    private void loadMoviesByProduce() {
+        Disposable disposable = mMovieRepository.getMoviesByProduce(mCurrentPage, mKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) {
+                        moviesObservable.addAll(movies);
+                        isLoadMore.set(false);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        handleError(throwable.getMessage());
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     private void loadMoviesByCategory() {

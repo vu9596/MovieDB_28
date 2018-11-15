@@ -9,6 +9,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.screen.producer.ProduceNavigator;
 
 public class MovieDetailViewModel {
     private static final String APPEND_TO_MOVIE_DETAIL = "videos,credits";
@@ -18,7 +19,9 @@ public class MovieDetailViewModel {
 
     private OnChangeVideoListener mOnChangeVideoListener;
 
-    private MovieDetailNavigator mNavigator;
+    private MovieDetailNavigator mMovieDetailNavigator;
+
+    private ProduceNavigator mProduceNavigator;
 
     public MovieDetailViewModel(int movieId, MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
@@ -26,7 +29,11 @@ public class MovieDetailViewModel {
     }
 
     public void setNavigator(MovieDetailNavigator navigator) {
-        mNavigator = navigator;
+        mMovieDetailNavigator = navigator;
+    }
+
+    public void setProduceNavigator(ProduceNavigator produceNavigator) {
+        mProduceNavigator = produceNavigator;
     }
 
     public void setOnChangeVideoListener(OnChangeVideoListener listener) {
@@ -64,7 +71,7 @@ public class MovieDetailViewModel {
     }
 
     public void back() {
-        mNavigator.back();
+        mMovieDetailNavigator.back();
     }
 
     public void clear() {
