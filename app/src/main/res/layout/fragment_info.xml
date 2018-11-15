@@ -18,12 +18,15 @@
 
         <TextView
             android:id="@+id/text_movie_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.movieObservable.title}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dp_16"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/image_favorite"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <RatingBar
             android:id="@+id/rating_bar"

@@ -43,12 +43,18 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new MovieDetailViewModel(0,
+        String movieId = getIntent().getBundleExtra(EXTRAS_ARGS).getString(BUNDLE_KEY);
+        mViewModel = new MovieDetailViewModel(Integer.valueOf(movieId),
                 MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         mBinding.setViewModel(mViewModel);
-
         initViews();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mViewModel.clear();
     }
 
     private void initViews() {

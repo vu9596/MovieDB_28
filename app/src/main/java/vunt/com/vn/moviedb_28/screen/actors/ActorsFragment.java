@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.data.model.Actor;
 import vunt.com.vn.moviedb_28.databinding.FragmentActorBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
@@ -23,7 +26,7 @@ public class ActorsFragment extends BaseFragment {
         mBinding = FragmentActorBinding.bind(view);
         mBinding.setViewModel(mViewModel);
         setupAdapters(mBinding.recyclerActor,
-                new ActorsAdapter(mViewModel.getMovie().getCastResult().getCasts()));
+                new ActorsAdapter(new ArrayList<Actor>()));
         return view;
     }
 }

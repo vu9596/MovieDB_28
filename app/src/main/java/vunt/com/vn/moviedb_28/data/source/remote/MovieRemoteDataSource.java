@@ -95,4 +95,9 @@ public class MovieRemoteDataSource implements MovieDataSource.Remote {
                     }
                 });
     }
+
+    @Override
+    public Single<Movie> getMovieDetail(int movieId, String append) {
+        return mApi.getMovieDetail(movieId, append);
+    }
 }

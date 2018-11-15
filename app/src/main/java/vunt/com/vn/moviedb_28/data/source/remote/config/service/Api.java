@@ -2,7 +2,9 @@ package vunt.com.vn.moviedb_28.data.source.remote.config.service;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
+import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.source.remote.config.response.CategoryResult;
 import vunt.com.vn.moviedb_28.data.source.remote.config.response.GenreResult;
 
@@ -26,4 +28,8 @@ public interface Api {
     @GET("/3/discover/movie")
     Single<CategoryResult> getMoviesByGenre(@Query("page") int page,
                                             @Query("with_genres") String genreId);
+
+    @GET("/3/movie/{id}")
+    Single<Movie> getMovieDetail(@Path("id") int movieId,
+                                 @Query("append_to_response") String apend);
 }
