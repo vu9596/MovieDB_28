@@ -122,4 +122,9 @@ public class MovieRemoteDataSource implements MovieDataSource.Remote {
                     }
                 });
     }
+
+    @Override
+    public Single<CategoryResult> searchMovie(String type, String keyword, int page) {
+        return mApi.searchMovie(type, keyword, page);
+    }
 }

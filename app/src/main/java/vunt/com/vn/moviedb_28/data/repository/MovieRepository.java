@@ -8,6 +8,7 @@ import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.source.MovieDataSource;
 import vunt.com.vn.moviedb_28.data.source.local.MovieLocalDataSource;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
+import vunt.com.vn.moviedb_28.data.source.remote.config.response.CategoryResult;
 
 public class MovieRepository implements MovieDataSource.Local,
         MovieDataSource.Remote {
@@ -73,6 +74,11 @@ public class MovieRepository implements MovieDataSource.Local,
     @Override
     public Single<List<Movie>> getMoviesByActor(int page, String actorId) {
         return mMovieRemoteDataSource.getMoviesByActor(page, actorId);
+    }
+
+    @Override
+    public Single<CategoryResult> searchMovie(String type, String keyword, int page) {
+        return mMovieRemoteDataSource.searchMovie(type, keyword, page);
     }
 
     @Override

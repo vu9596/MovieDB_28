@@ -5,6 +5,7 @@ import java.util.List;
 import io.reactivex.Single;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
+import vunt.com.vn.moviedb_28.data.source.remote.config.response.CategoryResult;
 
 public interface MovieDataSource {
 
@@ -38,6 +39,8 @@ public interface MovieDataSource {
         Single<List<Movie>> getMoviesByProduce(int page, String produceId);
 
         Single<List<Movie>> getMoviesByActor(int page, String actorId);
+
+        Single<CategoryResult> searchMovie(String type, String keyword, int page);
     }
 
 }

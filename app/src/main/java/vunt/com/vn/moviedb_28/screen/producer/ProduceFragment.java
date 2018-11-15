@@ -14,7 +14,6 @@ import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Company;
 import vunt.com.vn.moviedb_28.databinding.FragmentProduceBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
-import vunt.com.vn.moviedb_28.screen.actors.ActorsFragment;
 
 public class ProduceFragment extends BaseFragment
         implements ProduceAdapter.ItemClickListener {
