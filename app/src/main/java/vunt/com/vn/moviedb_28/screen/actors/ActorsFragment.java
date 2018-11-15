@@ -1,5 +1,6 @@
 package vunt.com.vn.moviedb_28.screen.actors;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,10 +14,22 @@ import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Actor;
 import vunt.com.vn.moviedb_28.databinding.FragmentActorBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
+import vunt.com.vn.moviedb_28.screen.producer.ProduceFragment;
 
 public class ActorsFragment extends BaseFragment implements ActorsAdapter.ItemClickListener {
 
     private FragmentActorBinding mBinding;
+    private OnActorSelectedListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnActorSelectedListener) context;
+        } catch (ClassCastException e) {
+            handleError(e.getMessage());
+        }
+    }
 
     @Nullable
     @Override
@@ -33,5 +46,14 @@ public class ActorsFragment extends BaseFragment implements ActorsAdapter.ItemCl
 
     @Override
     public void onActorItemClick(Actor actor) {
+        mListener.onActorSelected(actor);
+    }
+
+    public interface OnActorSelectedListener {
+        public void onActorSelected(Actor actor);
+    }
+
+    private void handleError(String message) {
+        //TODO handle error
     }
 }

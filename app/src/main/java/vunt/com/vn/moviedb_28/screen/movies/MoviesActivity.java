@@ -22,6 +22,7 @@ import vunt.com.vn.moviedb_28.screen.home.CategoriesAdapter;
 import vunt.com.vn.moviedb_28.screen.home.HomeViewModel;
 import vunt.com.vn.moviedb_28.screen.moviedetail.MovieDetailActivity;
 
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.ACTOR_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_NAME;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_SOURCE;
@@ -50,6 +51,8 @@ public class MoviesActivity extends AppCompatActivity implements MoviesNavigator
             bundle.putInt(BUNDLE_SOURCE, GENRE_SOURCE);
         } else if (getBy == PRODUCE_SOURCE) {
             bundle.putInt(BUNDLE_SOURCE, PRODUCE_SOURCE);
+        } else if (getBy == ACTOR_SOURCE) {
+            bundle.putInt(BUNDLE_SOURCE, ACTOR_SOURCE);
         } else {
             bundle.putInt(BUNDLE_SOURCE, CATEGORY_SOURCE);
         }

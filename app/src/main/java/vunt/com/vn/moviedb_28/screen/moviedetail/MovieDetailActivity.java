@@ -23,18 +23,18 @@ import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMovieDetailBinding;
 import vunt.com.vn.moviedb_28.screen.actors.ActorsFragment;
-import vunt.com.vn.moviedb_28.screen.movieinfo.GenresDetailAdapter;
 import vunt.com.vn.moviedb_28.screen.movieinfo.InfoFragment;
 import vunt.com.vn.moviedb_28.screen.movies.MoviesActivity;
 import vunt.com.vn.moviedb_28.screen.producer.ProduceFragment;
 import vunt.com.vn.moviedb_28.screen.trailers.TrailerFragment;
 
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.ACTOR_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.PRODUCE_SOURCE;
 
 public class MovieDetailActivity extends AppCompatActivity
         implements OnChangeVideoListener, MovieDetailNavigator,
-        ProduceFragment.OnProduceSelectedListener {
+        ProduceFragment.OnProduceSelectedListener, ActorsFragment.OnActorSelectedListener {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
 
@@ -106,7 +106,8 @@ public class MovieDetailActivity extends AppCompatActivity
 
     @Override
     public void showMovies(Actor actor, int getBy) {
-
+        Genre genre = new Genre(String.valueOf(actor.getId()), actor.getName());
+        startActivity(MoviesActivity.getMoviesIntent(this, genre, getBy));
     }
 
     @Override
@@ -128,6 +129,11 @@ public class MovieDetailActivity extends AppCompatActivity
     @Override
     public void onProduceSelected(Company company) {
         showMovies(company, PRODUCE_SOURCE);
+    }
+
+    @Override
+    public void onActorSelected(Actor actor) {
+        showMovies(actor, ACTOR_SOURCE);
     }
 
     public static class MainPagerAdapter extends FragmentPagerAdapter {
