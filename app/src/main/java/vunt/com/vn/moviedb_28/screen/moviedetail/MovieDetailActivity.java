@@ -70,10 +70,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         ProduceFragment produceFragment = new ProduceFragment();
         produceFragment.setViewModel(mViewModel);
         pagerAdapter.addFragment(produceFragment, getString(R.string.tab_title_producer));
-
         viewPager.setAdapter(pagerAdapter);
     }
-
 
     public static class MainPagerAdapter extends FragmentPagerAdapter {
         private List<Fragment> mFragments = new ArrayList<>();

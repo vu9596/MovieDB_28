@@ -20,7 +20,7 @@
             android:id="@+id/text_movie_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/movie_name"
+            android:text="@{viewModel.movieObservable.title}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dp_16"
             android:textStyle="bold" />
@@ -33,7 +33,7 @@
             android:layout_marginTop="@dimen/dp_8"
             android:isIndicator="true"
             android:numStars="5"
-            android:rating="3.5"
+            android:rating="@{viewModel.movieObservable.calculateVoteRating}"
             android:stepSize="0.1"
             android:theme="@style/RatingBar"
             app:layout_constraintStart_toStartOf="@id/text_movie_name"
@@ -54,6 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_30"
+            android:text="@{viewModel.movieObservable.overview}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dp_12"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,8 +68,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_8"
+            app:bindGenresDetail="@{viewModel.movieObservable.genres}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_movie_overview" />
+            app:layout_constraintTop_toBottomOf="@id/text_movie_overview"
+            app:spanCount="3" />
     </android.support.constraint.ConstraintLayout>
 </layout>

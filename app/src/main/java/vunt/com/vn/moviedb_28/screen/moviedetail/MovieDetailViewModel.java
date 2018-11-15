@@ -17,7 +17,6 @@ public class MovieDetailViewModel {
     }
 
     private void loadMovie(int movieId) {
-
     }
 
     public Movie getMovie() {
