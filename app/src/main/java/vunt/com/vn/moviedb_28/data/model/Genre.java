@@ -3,7 +3,7 @@ package vunt.com.vn.moviedb_28.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Genres {
+public class Genre {
     @SerializedName("id")
     @Expose
     private int mId;
@@ -11,10 +11,10 @@ public class Genres {
     @Expose
     private String mName;
 
-    public Genres() {
+    public Genre() {
     }
 
-    public Genres(int id, String name) {
+    public Genre(int id, String name) {
         mId = id;
         mName = name;
     }
@@ -23,7 +23,7 @@ public class Genres {
         return mId;
     }
 
-    public Genres setId(int id) {
+    public Genre setId(int id) {
         mId = id;
         return this;
     }
@@ -32,7 +32,7 @@ public class Genres {
         return mName;
     }
 
-    public Genres setName(String name) {
+    public Genre setName(String name) {
         mName = name;
         return this;
     }
