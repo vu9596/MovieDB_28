@@ -3,4 +3,7 @@
     <color name="color_primary">#000000</color>
     <color name="color_primary_dark">#000000</color>
     <color name="color_accent">#D81B60</color>
+    <color name="home_background">#212121</color>
+    <color name="color_orange">#FF9100</color>
+    <color name="color_brighter_black">#3C3C3C</color>
 </resources>

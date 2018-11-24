@@ -11,6 +11,9 @@ public class Genres {
     @Expose
     private String mName;
 
+    public Genres() {
+    }
+
     public Genres(int id, String name) {
         mId = id;
         mName = name;

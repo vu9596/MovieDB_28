@@ -61,6 +61,9 @@ public class Movie {
     @Expose
     private CastResult mCastResult;
 
+    public Movie() {
+    }
+
     public Movie(int id, String title, String posterPath, float voteAverage) {
         mId = id;
         mTitle = title;
