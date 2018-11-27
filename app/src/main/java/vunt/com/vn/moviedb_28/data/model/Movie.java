@@ -19,7 +19,7 @@ public class Movie {
 
     @SerializedName("genres")
     @Expose
-    private List<Genres> mGenres;
+    private List<Genre> mGenres;
 
     @SerializedName("title")
     @Expose
@@ -71,7 +71,7 @@ public class Movie {
         mVoteAverage = voteAverage;
     }
 
-    public Movie(int id, List<Genres> genres, String title, String overview, String posterPath,
+    public Movie(int id, List<Genre> genres, String title, String overview, String posterPath,
                  List<Company> productionCompanies, List<Language> spokenLanguages,
                  float voteAverage, VideoResult videoResult, CastResult castResult) {
         mId = id;
@@ -104,11 +104,11 @@ public class Movie {
         return this;
     }
 
-    public List<Genres> getGenres() {
+    public List<Genre> getGenres() {
         return mGenres;
     }
 
-    public Movie setGenres(List<Genres> genres) {
+    public Movie setGenres(List<Genre> genres) {
         mGenres = genres;
         return this;
     }
