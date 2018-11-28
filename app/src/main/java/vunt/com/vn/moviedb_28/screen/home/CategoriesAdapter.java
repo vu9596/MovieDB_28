@@ -1,5 +1,6 @@
 package vunt.com.vn.moviedb_28.screen.home;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import java.util.List;
 import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.databinding.ItemMovieBinding;
+import vunt.com.vn.moviedb_28.util.Constant;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
     private List<Movie> mMovies;
@@ -59,8 +61,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     }
 
     public void addData(List<Movie> movies) {
+        int posotionStart = mMovies.size();
         mMovies.addAll(movies);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(posotionStart, movies.size());
+    }
+
+    public void addData(Movie movie) {
+        mMovies.add(movie);
+        notifyItemInserted(mMovies.size() - Constant.INDEX_UNIT);
     }
 
     public void replaceData(List<Movie> movies) {

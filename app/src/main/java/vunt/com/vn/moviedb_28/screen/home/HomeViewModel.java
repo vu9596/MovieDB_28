@@ -2,14 +2,22 @@ package vunt.com.vn.moviedb_28.screen.home;
 
 import android.databinding.BaseObservable;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
+import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.util.Constant;
 
 public class HomeViewModel extends BaseObservable {
 
@@ -18,43 +26,143 @@ public class HomeViewModel extends BaseObservable {
     public ObservableBoolean mIsLoadMoreTopRate = new ObservableBoolean();
     public ObservableBoolean mIsLoadMoreUpComing = new ObservableBoolean();
 
-    private CategoriesAdapter mPopularAdapter, mNowPlayingAdapter, mTopRateAdapter, mUpComingAdapter;
-    private GenresAdapter mGenresAdapter;
     private LinearLayoutManager mGenresLayoutManager;
 
-    public HomeViewModel(CategoriesAdapter popularAdapter, CategoriesAdapter nowPlayingAdapter,
-                         CategoriesAdapter topRateAdapter, CategoriesAdapter upComingAdapter,
-                         GenresAdapter genresAdapter) {
-        mPopularAdapter = popularAdapter;
-        mNowPlayingAdapter = nowPlayingAdapter;
-        mTopRateAdapter = topRateAdapter;
-        mUpComingAdapter = upComingAdapter;
-        mGenresAdapter = genresAdapter;
+    private MovieRepository mMovieRepository;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    private List<Movie> mMorePopularMovies = new ArrayList<>();
+    private List<Movie> mMoreNowPlayingMovies = new ArrayList<>();
+    private List<Movie> mMoreUpComingMovies = new ArrayList<>();
+    private List<Movie> mMoreTopRateMovies = new ArrayList<>();
+
+    private ObservableField<List<Movie>> mPopularMovies = new ObservableField<>();
+    private ObservableField<List<Movie>> mNowPlayingMovies = new ObservableField<>();
+    private ObservableField<List<Movie>> mUpComingMovies = new ObservableField<>();
+    private ObservableField<List<Movie>> mTopRateMovies = new ObservableField<>();
+    private ObservableField<List<Genre>> mGenres = new ObservableField<>();
+
+    public HomeViewModel(MovieRepository movieRepository) {
+        mMovieRepository = movieRepository;
         initData();
     }
 
-    public HomeViewModel(CategoriesAdapter popularAdapter) {
-        mPopularAdapter = popularAdapter;
+    public void initData() {
+        loadPopularMovies();
+        laodNowPlayingMovies();
+        loadUpComingMovies();
+        loadTopRateMovies();
+        loadGenre();
     }
 
-    public void initData() {
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
-        movies.add(movie);
-        movies.add(movie);
-        mPopularAdapter.replaceData(movies);
-        mNowPlayingAdapter.replaceData(movies);
-        mTopRateAdapter.replaceData(movies);
-        mUpComingAdapter.replaceData(movies);
+    private void loadGenre() {
+        Disposable disposable = mMovieRepository.getGenres()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Genre>>() {
+                    @Override
+                    public void accept(List<Genre> genres) throws Exception {
+                        mGenres.set(genres);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(throwable.getMessage());
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
 
-        Genre genre = new Genre();
-        List<Genre> genres = new ArrayList<>();
-        genres.add(genre);
-        genres.add(genre);
-        genres.add(genre);
-        genres.add(genre);
-        mGenresAdapter.addData(genres);
+    private void loadTopRateMovies() {
+        Disposable disposable = mMovieRepository.getTopRate(Constant.FIRST_PAGE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+                        mTopRateMovies.set(movies.subList(
+                                0,
+                                movies.size() / Constant.SEPARATE_UNIT));
+                        mMoreTopRateMovies.addAll(movies.subList(
+                                movies.size() / Constant.SEPARATE_UNIT + Constant.INDEX_UNIT,
+                                movies.size() - Constant.INDEX_UNIT));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(throwable.getMessage());
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void loadUpComingMovies() {
+        Disposable disposable = mMovieRepository.getUpComing(Constant.FIRST_PAGE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+                        mUpComingMovies.set(movies.subList(
+                                0,
+                                movies.size() / Constant.SEPARATE_UNIT));
+                        mMoreUpComingMovies.addAll(movies.subList(
+                                movies.size() / Constant.SEPARATE_UNIT + Constant.INDEX_UNIT,
+                                movies.size() - Constant.INDEX_UNIT));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(throwable.getMessage());
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void laodNowPlayingMovies() {
+        Disposable disposable = mMovieRepository.getNowPlaying(Constant.FIRST_PAGE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+                        mNowPlayingMovies.set(movies.subList(
+                                0,
+                                movies.size() / Constant.SEPARATE_UNIT));
+                        mMoreNowPlayingMovies.addAll(movies.subList(
+                                movies.size() / Constant.SEPARATE_UNIT + Constant.INDEX_UNIT,
+                                movies.size() - Constant.INDEX_UNIT));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(throwable.getMessage());
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    private void loadPopularMovies() {
+        Disposable disposable = mMovieRepository.getPopular(Constant.FIRST_PAGE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+                        mPopularMovies.set(movies.subList(
+                                0,
+                                movies.size() / Constant.SEPARATE_UNIT));
+                        mMorePopularMovies.addAll(movies.subList(
+                                movies.size() / Constant.SEPARATE_UNIT + Constant.INDEX_UNIT,
+                                movies.size() - Constant.INDEX_UNIT));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(throwable.getMessage());
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     public LinearLayoutManager getGenresLayoutManager() {
@@ -65,63 +173,51 @@ public class HomeViewModel extends BaseObservable {
         mGenresLayoutManager = genresLayoutManager;
     }
 
-    public CategoriesAdapter getPopularAdapter() {
-        return mPopularAdapter;
+    public ObservableField<List<Movie>> getPopularMovies() {
+        return mPopularMovies;
     }
 
-    public CategoriesAdapter getNowPlayingAdapter() {
-        return mNowPlayingAdapter;
+    public ObservableField<List<Movie>> getNowPlayingMovies() {
+        return mNowPlayingMovies;
     }
 
-    public CategoriesAdapter getTopRateAdapter() {
-        return mTopRateAdapter;
+    public ObservableField<List<Movie>> getUpComingMovies() {
+        return mUpComingMovies;
     }
 
-    public CategoriesAdapter getUpComingAdapter() {
-        return mUpComingAdapter;
+    public ObservableField<List<Movie>> getTopRateMovies() {
+        return mTopRateMovies;
     }
 
-    public GenresAdapter getGenresAdapter() {
-        return mGenresAdapter;
+    public ObservableField<List<Genre>> getGenres() {
+        return mGenres;
     }
 
     public void onClickLoadMoreNowPlaying(View view) {
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
-        movies.add(movie);
-        movies.add(movie);
-        mNowPlayingAdapter.addData(movies);
+        mNowPlayingMovies.get().addAll(mMoreUpComingMovies);
         mIsLoadMoreNowPlaying.set(true);
     }
 
     public void onClickLoadMorePopular(View view) {
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
-        movies.add(movie);
-        movies.add(movie);
-        mPopularAdapter.addData(movies);
+        mPopularMovies.get().addAll(mMorePopularMovies);
         mIsLoadMorePopular.set(true);
     }
 
     public void onClickLoadMoreTopRate(View view) {
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
-        movies.add(movie);
-        movies.add(movie);
-        mTopRateAdapter.addData(movies);
+        mTopRateMovies.get().addAll(mMoreTopRateMovies);
         mIsLoadMoreTopRate.set(true);
     }
 
     public void onClickLoadMoreUpComing(View view) {
-        List<Movie> movies = new ArrayList<>();
-        Movie movie = new Movie();
-        movies.add(movie);
-        movies.add(movie);
-        movies.add(movie);
-        mUpComingAdapter.addData(movies);
+        mUpComingMovies.get().addAll(mMoreUpComingMovies);
         mIsLoadMoreUpComing.set(true);
+    }
+
+    public void clear() {
+        mCompositeDisposable.clear();
+    }
+
+    private void handleError(String message) {
+        //TODO handle error
     }
 }

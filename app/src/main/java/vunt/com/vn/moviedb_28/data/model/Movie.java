@@ -202,4 +202,8 @@ public class Movie {
         mCastResult = castResult;
         return this;
     }
+
+    public float calculateVoteRating() {
+        return mVoteAverage / 2;
+    }
 }
