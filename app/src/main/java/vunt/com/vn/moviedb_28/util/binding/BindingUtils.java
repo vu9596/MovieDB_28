@@ -32,10 +32,12 @@ public class BindingUtils {
         adapter.addData(observableField.get());
     }
 
-    @BindingAdapter({"bindGenres"})
+    @BindingAdapter(value = {"bindGenres", "bindItemClick"}, requireAll = false)
     public static void setGenresForRecyclerView(RecyclerView recyclerView,
-                                                ObservableField<List<Genre>> observableField) {
+                                                ObservableField<List<Genre>> observableField,
+                                                GenresAdapter.ItemClickListener listener) {
         GenresAdapter adapter = new GenresAdapter(observableField.get());
+        adapter.setItemClickListener(listener);
         recyclerView.setAdapter(adapter);
     }
 

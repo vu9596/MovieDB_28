@@ -14,6 +14,7 @@ import vunt.com.vn.moviedb_28.databinding.ItemGenresBinding;
 
 public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder> {
     private List<Genre> mGenres;
+    private ItemClickListener mItemClickListener;
 
     public GenresAdapter(List<Genre> genres) {
         mGenres = genres;
@@ -28,7 +29,7 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder
                 viewGroup,
                 false
         );
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, mItemClickListener);
     }
 
     @Override
@@ -41,21 +42,9 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder
         return mGenres != null ? mGenres.size() : 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private ItemGenresBinding mBinding;
-        private ItemGenresListViewModel mItemGenresListViewModel;
-
-        public ViewHolder(ItemGenresBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
-            mItemGenresListViewModel = new ItemGenresListViewModel();
-            mBinding.setViewModel(mItemGenresListViewModel);
-        }
-
-        public void bindData(Genre genre) {
-            mItemGenresListViewModel.setGenres(genre);
-            mBinding.executePendingBindings();
-        }
+    public GenresAdapter setItemClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+        return this;
     }
 
     public void addData(List<Genre> genres) {
@@ -67,5 +56,26 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.ViewHolder
         mGenres.clear();
         mGenres.addAll(genres);
         notifyDataSetChanged();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private ItemGenresBinding mBinding;
+        private ItemGenresListViewModel mItemGenresListViewModel;
+
+        public ViewHolder(ItemGenresBinding binding, ItemClickListener listener) {
+            super(binding.getRoot());
+            mBinding = binding;
+            mItemGenresListViewModel = new ItemGenresListViewModel(listener);
+            mBinding.setViewModel(mItemGenresListViewModel);
+        }
+
+        public void bindData(Genre genre) {
+            mItemGenresListViewModel.setGenres(genre);
+            mBinding.executePendingBindings();
+        }
+    }
+
+    public interface ItemClickListener {
+        void onItemClick (Genre genre);
     }
 }

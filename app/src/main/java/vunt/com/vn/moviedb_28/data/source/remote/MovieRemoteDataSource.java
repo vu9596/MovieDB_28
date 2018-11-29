@@ -15,6 +15,7 @@ import vunt.com.vn.moviedb_28.data.source.remote.config.service.NameServiceClien
 
 public class MovieRemoteDataSource implements MovieDataSource.Remote {
 
+    private static final String API_KEY = BuildConfig.API_KEY;
     private static MovieRemoteDataSource sInstance;
     private Api mApi;
 

@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="viewModel"
             type="vunt.com.vn.moviedb_28.screen.home.ItemGenresListViewModel" />
@@ -16,7 +17,8 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/home_background">
+            android:background="@color/home_background"
+            android:onClick="@{viewModel::onItemClicked}">
 
             <ImageView
                 android:id="@+id/image_genres"

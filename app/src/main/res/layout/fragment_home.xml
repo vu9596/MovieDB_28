@@ -3,6 +3,10 @@
 
     <data>
 
+        <import type="vunt.com.vn.moviedb_28.data.model.CategoryKey" />
+
+        <import type="vunt.com.vn.moviedb_28.data.model.CategoryName" />
+
         <variable
             name="viewModel"
             type="vunt.com.vn.moviedb_28.screen.home.HomeViewModel" />
@@ -28,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
                 android:layout_marginEnd="@dimen/dp_16"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_POPULAR, CategoryName.CATEGORY_POPULAR)}"
                 android:text="@string/category_popular"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/color_orange"
@@ -37,6 +42,7 @@
                 android:id="@+id/image_next_popular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_POPULAR, CategoryName.CATEGORY_POPULAR)}"
                 android:paddingStart="@dimen/dp_8"
                 android:src="@drawable/ic_next"
                 app:layout_constraintBottom_toBottomOf="@id/text_popular"
@@ -72,6 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_8"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_POPULAR, CategoryName.CATEGORY_POPULAR)}"
                 android:padding="@dimen/dp_4"
                 android:text="@string/view_more"
                 android:textColor="@color/color_orange"
@@ -85,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_NOW_PLAYING, CategoryName.CATEGORY_NOW_PLAYING)}"
                 android:text="@string/category_now_playing"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/color_orange"
@@ -95,6 +103,7 @@
                 android:id="@+id/image_next_now_playing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_NOW_PLAYING, CategoryName.CATEGORY_NOW_PLAYING)}"
                 android:paddingStart="@dimen/dp_8"
                 android:src="@drawable/ic_next"
                 app:layout_constraintBottom_toBottomOf="@id/text_now_playing"
@@ -130,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_8"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_NOW_PLAYING, CategoryName.CATEGORY_NOW_PLAYING)}"
                 android:padding="@dimen/dp_4"
                 android:text="@string/view_more"
                 android:textColor="@color/color_orange"
@@ -143,6 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_UP_COMING, CategoryName.CATEGORY_UP_COMING)}"
                 android:text="@string/category_up_coming"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/color_orange"
@@ -153,6 +164,7 @@
                 android:id="@+id/image_next_up_coming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{viewModel::onClickLoadMoreUpComing}"
                 android:paddingStart="@dimen/dp_8"
                 android:src="@drawable/ic_next"
                 app:layout_constraintBottom_toBottomOf="@id/text_up_coming"
@@ -175,7 +187,7 @@
                 android:layout_height="@dimen/dp_36"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@color/color_brighter_black"
-                android:onClick="@{viewModel::onClickLoadMoreUpComing}"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_UP_COMING, CategoryName.CATEGORY_UP_COMING)}"
                 android:padding="@dimen/dp_4"
                 android:src="@drawable/ic_arrow_down"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -188,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_8"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_POPULAR, CategoryName.CATEGORY_POPULAR)}"
                 android:padding="@dimen/dp_4"
                 android:text="@string/view_more"
                 android:textColor="@color/color_orange"
@@ -201,6 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_TOP_RATE, CategoryName.CATEGORY_TOP_RATE)}"
                 android:text="@string/category_top_rate"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/color_orange"
@@ -211,6 +225,7 @@
                 android:id="@+id/image_next_top_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_TOP_RATE, CategoryName.CATEGORY_TOP_RATE)}"
                 android:paddingStart="@dimen/dp_8"
                 android:src="@drawable/ic_next"
                 app:layout_constraintBottom_toBottomOf="@id/text_top_rate"
@@ -246,6 +261,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_8"
+                android:onClick="@{(view) -> viewModel.onCategoryClick(view, CategoryKey.CATEGORY_TOP_RATE, CategoryName.CATEGORY_TOP_RATE)}"
                 android:padding="@dimen/dp_4"
                 android:text="@string/view_more"
                 android:textColor="@color/color_orange"
@@ -265,26 +281,16 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/text_view_more_top_rate" />
 
-            <ImageView
-                android:id="@+id/image_next_genres"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/dp_8"
-                android:src="@drawable/ic_next"
-                app:layout_constraintBottom_toBottomOf="@id/text_genres"
-                app:layout_constraintStart_toEndOf="@id/text_genres"
-                app:layout_constraintTop_toTopOf="@id/text_genres" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_genres"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindGenres="@{viewModel.genres}"
+                app:bindItemClick="@{viewModel.itemClickListener}"
                 app:layoutManager="@{viewModel.genresLayoutManager}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_genres" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
-
 </layout>
