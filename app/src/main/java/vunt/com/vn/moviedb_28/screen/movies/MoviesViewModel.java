@@ -1,6 +1,7 @@
 package vunt.com.vn.moviedb_28.screen.movies;
 
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableList;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import vunt.com.vn.moviedb_28.screen.home.HomeViewModel;
 import vunt.com.vn.moviedb_28.util.Constant;
 
 public class MoviesViewModel {
+    private int mLoadBy;
     private String mKey;
     public final ObservableList<Movie> moviesObservable = new ObservableArrayList<>();
 
@@ -24,14 +26,22 @@ public class MoviesViewModel {
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private int mCurrentPage;
 
+    public final ObservableBoolean isLoadMore = new ObservableBoolean(false);
+
     public MoviesViewModel(MovieRepository movieRepository, int loadBy, String key) {
+        mLoadBy = loadBy;
         mMovieRepository = movieRepository;
         mCurrentPage = Constant.FIRST_PAGE;
         mKey = key;
-        loadMovies(loadBy);
+        isLoadMore.set(false);
+        loadMovies(mLoadBy);
     }
 
-    private void loadMovies(int loadBy) {
+    public int getLoadBy() {
+        return mLoadBy;
+    }
+
+    public void loadMovies(int loadBy) {
         if (loadBy == HomeViewModel.GENRE_SOURCE) {
             loadMoviesByGenre();
             return;
@@ -57,13 +67,14 @@ public class MoviesViewModel {
     }
 
     private void loadTopRateMovies() {
-        Disposable disposable = mMovieRepository.getTopRate(Constant.FIRST_PAGE)
+        Disposable disposable = mMovieRepository.getTopRate(mCurrentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
+                        isLoadMore.set(false);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -75,13 +86,14 @@ public class MoviesViewModel {
     }
 
     private void loadUpComingMovies() {
-        Disposable disposable = mMovieRepository.getUpComing(Constant.FIRST_PAGE)
+        Disposable disposable = mMovieRepository.getUpComing(mCurrentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
+                        isLoadMore.set(false);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -93,13 +105,14 @@ public class MoviesViewModel {
     }
 
     private void loadNowPlayingMovies() {
-        Disposable disposable = mMovieRepository.getNowPlaying(Constant.FIRST_PAGE)
+        Disposable disposable = mMovieRepository.getNowPlaying(mCurrentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
+                        isLoadMore.set(false);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -111,13 +124,14 @@ public class MoviesViewModel {
     }
 
     private void loadPopularMovies() {
-        Disposable disposable = mMovieRepository.getPopular(Constant.FIRST_PAGE)
+        Disposable disposable = mMovieRepository.getPopular(mCurrentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
+                        isLoadMore.set(false);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -136,6 +150,7 @@ public class MoviesViewModel {
                     @Override
                     public void accept(List<Movie> movies) {
                         moviesObservable.addAll(movies);
+                        isLoadMore.set(false);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -151,6 +166,10 @@ public class MoviesViewModel {
     }
 
     private void handleError(String message) {
-        //TODO handle error
+        isLoadMore.set(false);
+    }
+
+    public void increaseCurrentPage() {
+        mCurrentPage += Constant.INDEX_UNIT;
     }
 }

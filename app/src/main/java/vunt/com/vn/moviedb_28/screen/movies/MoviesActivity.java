@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMoviesBinding;
 import vunt.com.vn.moviedb_28.screen.home.CategoriesAdapter;
 import vunt.com.vn.moviedb_28.screen.home.HomeViewModel;
+import vunt.com.vn.moviedb_28.util.Constant;
 
 public class MoviesActivity extends AppCompatActivity {
 
@@ -28,6 +30,9 @@ public class MoviesActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
 
     private MoviesViewModel mViewModel;
+
+    private boolean isScrolling;
+    private int currentItem, totalItem, scrolOutItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +71,24 @@ public class MoviesActivity extends AppCompatActivity {
         genresRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    isScrolling = true;
+                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
+                super.onScrolled(recyclerView, dx, dy);
+                currentItem = mLayoutManager.getChildCount();
+                totalItem = mLayoutManager.getItemCount();
+                scrolOutItem = mLayoutManager.findFirstVisibleItemPosition();
+                if (isScrolling && (currentItem + scrolOutItem == totalItem)) {
+                    isScrolling = false;
+                    mViewModel.isLoadMore.set(true);
+                    mViewModel.increaseCurrentPage();
+                    mViewModel.loadMovies(mViewModel.getLoadBy());
+                }
             }
         });
     }
