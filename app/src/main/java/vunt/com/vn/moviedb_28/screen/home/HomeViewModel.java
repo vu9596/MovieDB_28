@@ -1,10 +1,10 @@
 package vunt.com.vn.moviedb_28.screen.home;
 
 import android.databinding.BaseObservable;
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
+import android.databinding.ObservableList;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.util.Constant;
 
-public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemClickListener {
+public class HomeViewModel extends BaseObservable {
 
     public static final String BUNDLE_SOURCE = "BUNDLE_SOURCE";
     public static final String BUNDLE_KEY = "BUNDLE_KEY";
@@ -33,8 +33,6 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
     public ObservableBoolean mIsLoadMoreTopRate = new ObservableBoolean();
     public ObservableBoolean mIsLoadMoreUpComing = new ObservableBoolean();
 
-    private LinearLayoutManager mGenresLayoutManager;
-
     private MovieRepository mMovieRepository;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -43,45 +41,17 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
     private List<Movie> mMoreUpComingMovies = new ArrayList<>();
     private List<Movie> mMoreTopRateMovies = new ArrayList<>();
 
-    private ObservableField<List<Movie>> mPopularMovies = new ObservableField<>();
-    private ObservableField<List<Movie>> mNowPlayingMovies = new ObservableField<>();
-    private ObservableField<List<Movie>> mUpComingMovies = new ObservableField<>();
-    private ObservableField<List<Movie>> mTopRateMovies = new ObservableField<>();
-    private ObservableField<List<Genre>> mGenres = new ObservableField<>();
+    public final ObservableList<Movie> popularMoviesObservable = new ObservableArrayList<>();
+    public final ObservableList<Movie> nowPlayingMoviesObservable = new ObservableArrayList<>();
+    public final ObservableList<Movie> upComingMoviesObservable = new ObservableArrayList<>();
+    public final ObservableList<Movie> topRateMoviesObservable = new ObservableArrayList<>();
+    public final ObservableList<Genre> genresObservable = new ObservableArrayList<>();
 
     private HomeNavigator mNavigator;
 
     public HomeViewModel(MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
         initData();
-    }
-
-    public LinearLayoutManager getGenresLayoutManager() {
-        return mGenresLayoutManager;
-    }
-
-    public void setGenresLayoutManager(LinearLayoutManager genresLayoutManager) {
-        mGenresLayoutManager = genresLayoutManager;
-    }
-
-    public ObservableField<List<Movie>> getPopularMovies() {
-        return mPopularMovies;
-    }
-
-    public ObservableField<List<Movie>> getNowPlayingMovies() {
-        return mNowPlayingMovies;
-    }
-
-    public ObservableField<List<Movie>> getUpComingMovies() {
-        return mUpComingMovies;
-    }
-
-    public ObservableField<List<Movie>> getTopRateMovies() {
-        return mTopRateMovies;
-    }
-
-    public ObservableField<List<Genre>> getGenres() {
-        return mGenres;
     }
 
     public void setNavigator(HomeNavigator navigator) {
@@ -103,7 +73,7 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
                 .subscribe(new Consumer<List<Genre>>() {
                     @Override
                     public void accept(List<Genre> genres) throws Exception {
-                        mGenres.set(genres);
+                        genresObservable.addAll(genres);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -121,7 +91,7 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) throws Exception {
-                        mTopRateMovies.set(movies.subList(
+                        topRateMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
                         mMoreTopRateMovies.addAll(movies.subList(
@@ -144,7 +114,7 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) throws Exception {
-                        mUpComingMovies.set(movies.subList(
+                        upComingMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
                         mMoreUpComingMovies.addAll(movies.subList(
@@ -167,7 +137,7 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) throws Exception {
-                        mNowPlayingMovies.set(movies.subList(
+                        nowPlayingMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
                         mMoreNowPlayingMovies.addAll(movies.subList(
@@ -190,7 +160,7 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
                 .subscribe(new Consumer<List<Movie>>() {
                     @Override
                     public void accept(List<Movie> movies) throws Exception {
-                        mPopularMovies.set(movies.subList(
+                        popularMoviesObservable.addAll(movies.subList(
                                 0,
                                 movies.size() / Constant.SEPARATE_UNIT));
                         mMorePopularMovies.addAll(movies.subList(
@@ -207,22 +177,22 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
     }
 
     public void onClickLoadMoreNowPlaying(View view) {
-        mNowPlayingMovies.get().addAll(mMoreUpComingMovies);
+        nowPlayingMoviesObservable.addAll(mMoreNowPlayingMovies);
         mIsLoadMoreNowPlaying.set(true);
     }
 
     public void onClickLoadMorePopular(View view) {
-        mPopularMovies.get().addAll(mMorePopularMovies);
+        popularMoviesObservable.addAll(mMorePopularMovies);
         mIsLoadMorePopular.set(true);
     }
 
     public void onClickLoadMoreTopRate(View view) {
-        mTopRateMovies.get().addAll(mMoreTopRateMovies);
+        topRateMoviesObservable.addAll(mMoreTopRateMovies);
         mIsLoadMoreTopRate.set(true);
     }
 
     public void onClickLoadMoreUpComing(View view) {
-        mUpComingMovies.get().addAll(mMoreUpComingMovies);
+        upComingMoviesObservable.addAll(mMoreUpComingMovies);
         mIsLoadMoreUpComing.set(true);
     }
 
@@ -239,19 +209,6 @@ public class HomeViewModel extends BaseObservable implements GenresAdapter.ItemC
         bundle.putInt(BUNDLE_SOURCE, CATEGORY_SOURCE);
         bundle.putString(BUNDLE_KEY, key);
         bundle.putString(BUNDLE_NAME, name);
-        mNavigator.showListMovies(bundle);
-    }
-
-    public GenresAdapter.ItemClickListener getItemClickListener() {
-        return this;
-    }
-
-    @Override
-    public void onItemClick(Genre genre) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(BUNDLE_SOURCE, GENRE_SOURCE);
-        bundle.putString(BUNDLE_KEY, String.valueOf(genre.getId()));
-        bundle.putString(BUNDLE_NAME, genre.getName());
-        mNavigator.showListMovies(bundle);
+        mNavigator.showMovies(bundle);
     }
 }
