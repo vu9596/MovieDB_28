@@ -22,4 +22,8 @@ public interface Api {
 
     @GET("/3/genre/movie/list")
     Single<GenreResult> getGenre();
+
+    @GET("/3/discover/movie")
+    Single<CategoryResult> getMoviesByGenre(@Query("page") int page,
+                                            @Query("with_genres") String genreId);
 }

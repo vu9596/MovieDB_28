@@ -84,4 +84,15 @@ public class MovieRemoteDataSource implements MovieDataSource.Remote {
                     }
                 });
     }
+
+    @Override
+    public Single<List<Movie>> getMoviesByGenre(int page, String genreId) {
+        return mApi.getMoviesByGenre(page, genreId)
+                .map(new Function<CategoryResult, List<Movie>>() {
+                    @Override
+                    public List<Movie> apply(CategoryResult categoryResult) {
+                        return categoryResult.getMovies();
+                    }
+                });
+    }
 }
