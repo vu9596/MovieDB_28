@@ -13,15 +13,23 @@ import android.widget.AbsListView;
 import java.util.ArrayList;
 
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMoviesBinding;
 import vunt.com.vn.moviedb_28.screen.home.CategoriesAdapter;
 import vunt.com.vn.moviedb_28.screen.home.HomeViewModel;
-import vunt.com.vn.moviedb_28.util.Constant;
+import vunt.com.vn.moviedb_28.screen.moviedetail.MovieDetailActivity;
 
-public class MoviesActivity extends AppCompatActivity {
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_NAME;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_SOURCE;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.CATEGORY_SOURCE;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
+
+public class MoviesActivity extends AppCompatActivity implements MoviesNavigator,
+        CategoriesAdapter.ItemClickListener {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
 
@@ -33,6 +41,20 @@ public class MoviesActivity extends AppCompatActivity {
 
     private boolean isScrolling;
     private int currentItem, totalItem, scrolOutItem;
+
+    public static Intent getMoviesIntent(Context context, Genre genre, int getBy) {
+        Intent intent = new Intent(context, MoviesActivity.class);
+        Bundle bundle = new Bundle();
+        if (getBy == GENRE_SOURCE) {
+            bundle.putInt(BUNDLE_SOURCE, GENRE_SOURCE);
+        } else {
+            bundle.putInt(BUNDLE_SOURCE, CATEGORY_SOURCE);
+        }
+        bundle.putString(BUNDLE_KEY, genre.getId());
+        bundle.putString(BUNDLE_NAME, genre.getName());
+        intent.putExtra(EXTRAS_ARGS, bundle);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +84,45 @@ public class MoviesActivity extends AppCompatActivity {
         RecyclerView genresRecycler = mBinding.recycleGenre;
         genresRecycler.setLayoutManager(mLayoutManager);
         mAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
+        mAdapter.setItemClickListener(this);
         genresRecycler.setAdapter(mAdapter);
 
         setupScrollListener(genresRecycler);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showMovieDetail(Movie movie) {
+        startActivity(MovieDetailActivity.getMovieDetailIntent(this, movie));
+    }
+
+    @Override
+    public void onMovieItemClick(Movie movie) {
+        showMovieDetail(movie);
+    }
+
+    private void setupToolbar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        String title = getTitleToolbar();
+        getSupportActionBar().setTitle(title);
+    }
+
+    private String getTitleToolbar() {
+        String title = "";
+        title = getIntent().getBundleExtra(EXTRAS_ARGS).getString(HomeViewModel.BUNDLE_NAME);
+        return title;
     }
 
     private void setupScrollListener(RecyclerView genresRecycler) {
@@ -88,39 +146,9 @@ public class MoviesActivity extends AppCompatActivity {
                     mViewModel.isLoadMore.set(true);
                     mViewModel.increaseCurrentPage();
                     mViewModel.loadMovies(mViewModel.getLoadBy());
+                    mViewModel.isLoadMore.set(true);
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public static Intent getMoviesIntent(Context context, Bundle bundle) {
-        Intent intent = new Intent(context, MoviesActivity.class);
-        intent.putExtra(EXTRAS_ARGS, bundle);
-        return intent;
-    }
-
-    private void setupToolbar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        String title = getTitleToolbar();
-        getSupportActionBar().setTitle(title);
-    }
-
-    private String getTitleToolbar() {
-        String title = "";
-        title = getIntent().getBundleExtra(EXTRAS_ARGS).getString(HomeViewModel.BUNDLE_NAME);
-        return title;
     }
 }

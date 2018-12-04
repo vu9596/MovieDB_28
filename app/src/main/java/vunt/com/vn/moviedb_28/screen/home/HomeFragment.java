@@ -20,6 +20,7 @@ import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.FragmentHomeBinding;
+import vunt.com.vn.moviedb_28.screen.moviedetail.MovieDetailActivity;
 import vunt.com.vn.moviedb_28.screen.movies.MoviesActivity;
 
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
@@ -28,7 +29,7 @@ import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
 
 public class HomeFragment extends Fragment implements HomeNavigator,
-        GenresAdapter.ItemClickListener {
+        GenresAdapter.ItemClickListener, CategoriesAdapter.ItemClickListener {
 
     private HomeViewModel mViewModel;
 
@@ -53,21 +54,52 @@ public class HomeFragment extends Fragment implements HomeNavigator,
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mViewModel.clear();
+    }
+
+    @Override
+    public void showMovies(Genre genre, int getBy) {
+        Intent intent = MoviesActivity.getMoviesIntent(getActivity(), genre, getBy);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showMovieDetail(Movie movie) {
+        startActivity(MovieDetailActivity.getMovieDetailIntent(getActivity(), movie));
+    }
+
+    @Override
+    public void onGenreItemClick(Genre genre) {
+        showMovies(genre, GENRE_SOURCE);
+    }
+
+    @Override
+    public void onMovieItemClick(Movie movie) {
+        showMovieDetail(movie);
+    }
+
     private void setupAdapters() {
         RecyclerView popularRecycler = mBinding.recyclerPopular;
         mPopularAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
+        mPopularAdapter.setItemClickListener(this);
         popularRecycler.setAdapter(mPopularAdapter);
 
         RecyclerView nowPlayingRecycler = mBinding.recyclerNowPlaying;
         mNowPlayingAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
+        mNowPlayingAdapter.setItemClickListener(this);
         nowPlayingRecycler.setAdapter(mNowPlayingAdapter);
 
         RecyclerView upComingRecycler = mBinding.recyclerUpComing;
         mUpComingAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
+        mUpComingAdapter.setItemClickListener(this);
         upComingRecycler.setAdapter(mUpComingAdapter);
 
         RecyclerView topRateRecycler = mBinding.recyclerTopRate;
         mTopRateAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
+        mTopRateAdapter.setItemClickListener(this);
         topRateRecycler.setAdapter(mTopRateAdapter);
 
         RecyclerView genresRecycler = mBinding.recyclerGenre;
@@ -89,26 +121,5 @@ public class HomeFragment extends Fragment implements HomeNavigator,
         MovieRepository movieRepository = MovieRepository.getInstance(
                 MovieRemoteDataSource.getInstance());
         mViewModel = new HomeViewModel(movieRepository);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mViewModel.clear();
-    }
-
-    @Override
-    public void showMovies(Bundle bundle) {
-        Intent intent = MoviesActivity.getMoviesIntent(getActivity(), bundle);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemClick(Genre genre) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(BUNDLE_SOURCE, GENRE_SOURCE);
-        bundle.putString(BUNDLE_KEY, String.valueOf(genre.getId()));
-        bundle.putString(BUNDLE_NAME, genre.getName());
-        showMovies(bundle);
     }
 }

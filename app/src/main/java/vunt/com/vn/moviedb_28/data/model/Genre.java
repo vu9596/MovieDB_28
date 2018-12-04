@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class Genre {
     @SerializedName("id")
     @Expose
-    private int mId;
+    private String mId;
     @SerializedName("name")
     @Expose
     private String mName;
@@ -14,16 +14,16 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(int id, String name) {
+    public Genre(String id, String name) {
         mId = id;
         mName = name;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public Genre setId(int id) {
+    public Genre setId(String id) {
         mId = id;
         return this;
     }

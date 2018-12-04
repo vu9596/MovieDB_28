@@ -15,6 +15,7 @@ import vunt.com.vn.moviedb_28.util.Constant;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
     private List<Movie> mMovies;
+    private ItemClickListener mItemClickListener;
 
     public CategoriesAdapter(List<Movie> movies) {
         mMovies = movies;
@@ -29,7 +30,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                 viewGroup,
                 false
         );
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, mItemClickListener);
     }
 
     @Override
@@ -42,14 +43,19 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         return mMovies != null ? mMovies.size() : 0;
     }
 
+    public CategoriesAdapter setItemClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+        return this;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ItemMovieBinding mBinding;
         private ItemMovieListViewModel mItemMovieListViewModel;
 
-        public ViewHolder(ItemMovieBinding binding) {
+        public ViewHolder(ItemMovieBinding binding, ItemClickListener listener) {
             super(binding.getRoot());
             mBinding = binding;
-            mItemMovieListViewModel = new ItemMovieListViewModel();
+            mItemMovieListViewModel = new ItemMovieListViewModel(listener);
             mBinding.setViewModel(mItemMovieListViewModel);
         }
 
@@ -74,5 +80,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         mMovies.clear();
         mMovies.addAll(movies);
         notifyDataSetChanged();
+    }
+
+    public interface ItemClickListener {
+        void onMovieItemClick(Movie movie);
     }
 }
