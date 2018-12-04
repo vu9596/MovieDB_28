@@ -23,9 +23,6 @@ import vunt.com.vn.moviedb_28.databinding.FragmentHomeBinding;
 import vunt.com.vn.moviedb_28.screen.moviedetail.MovieDetailActivity;
 import vunt.com.vn.moviedb_28.screen.movies.MoviesActivity;
 
-import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
-import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_NAME;
-import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
 
 public class HomeFragment extends Fragment implements HomeNavigator,
