@@ -32,7 +32,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     private MovieDetailViewModel mViewModel;
     private ActivityMovieDetailBinding mBinding;
 
-
     public static Intent getMovieDetailIntent(Context context, Movie movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -44,7 +43,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = new MovieDetailViewModel(0, MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
+        mViewModel = new MovieDetailViewModel(0,
+                MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         mBinding.setViewModel(mViewModel);
 
@@ -54,16 +54,26 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void initViews() {
         ViewPager viewPager = findViewById(R.id.view_pager);
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(new InfoFragment(),
-                getString(R.string.tab_title_information));
-        pagerAdapter.addFragment(new ActorsFragment(),
-                getString(R.string.tab_title_actor));
-        pagerAdapter.addFragment(new TrailerFragment(),
-                getString(R.string.tab_title_trailer));
-        pagerAdapter.addFragment(new ProduceFragment(),
-                getString(R.string.tab_title_producer));
+
+        InfoFragment infoFragment = new InfoFragment();
+        infoFragment.setViewModel(mViewModel);
+        pagerAdapter.addFragment(infoFragment, getString(R.string.tab_title_information));
+
+        ActorsFragment actorsFragment = new ActorsFragment();
+        actorsFragment.setViewModel(mViewModel);
+        pagerAdapter.addFragment(actorsFragment, getString(R.string.tab_title_actor));
+
+        TrailerFragment trailerFragment = new TrailerFragment();
+        trailerFragment.setViewModel(mViewModel);
+        pagerAdapter.addFragment(trailerFragment, getString(R.string.tab_title_trailer));
+
+        ProduceFragment produceFragment = new ProduceFragment();
+        produceFragment.setViewModel(mViewModel);
+        pagerAdapter.addFragment(produceFragment, getString(R.string.tab_title_producer));
+
         viewPager.setAdapter(pagerAdapter);
     }
+
 
     public static class MainPagerAdapter extends FragmentPagerAdapter {
         private List<Fragment> mFragments = new ArrayList<>();

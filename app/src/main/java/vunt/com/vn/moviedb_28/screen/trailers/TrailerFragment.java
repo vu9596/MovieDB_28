@@ -3,19 +3,27 @@ package vunt.com.vn.moviedb_28.screen.trailers;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.databinding.FragmentTrailerBinding;
+import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
-public class TrailerFragment extends Fragment {
+public class TrailerFragment extends BaseFragment {
+
+    private FragmentTrailerBinding mBinding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_trailer, container, false);
+        View view = inflater.inflate(R.layout.fragment_trailer, container, false);
+        mBinding = FragmentTrailerBinding.bind(view);
+        mBinding.setViewModel(mViewModel);
+        setupAdapters(mBinding.recyclerTrailer,
+                new TrailerAdapter(mViewModel.getMovie().getVideoResult().getVideos()));
+        return view;
     }
 }
