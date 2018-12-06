@@ -79,7 +79,6 @@ public class BindingUtils {
         }
     }
 
-
     @BindingAdapter("bindImage")
     public static void setRoundedImage(ImageView imageView, String url) {
         if (url == null || url.isEmpty()) {
@@ -100,7 +99,7 @@ public class BindingUtils {
     public static void setProducesForRecyclerView(RecyclerView recyclerView,
                                                   List<Company> companies) {
         ProduceAdapter adapter = (ProduceAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
+        if (adapter != null && companies != null) {
             adapter.replaceData(companies);
         }
     }
@@ -109,7 +108,7 @@ public class BindingUtils {
     public static void setVideosForRecyclerView(RecyclerView recyclerView,
                                                 List<Video> videos) {
         TrailerAdapter adapter = (TrailerAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
+        if (adapter != null && videos != null) {
             adapter.replaceData(videos);
         }
     }
@@ -118,7 +117,7 @@ public class BindingUtils {
     public static void setActorsForRecyclerView(RecyclerView recyclerView,
                                                 List<Actor> actors) {
         ActorsAdapter adapter = (ActorsAdapter) recyclerView.getAdapter();
-        if (adapter != null) {
+        if (adapter != null && actors != null) {
             adapter.replaceData(actors);
         }
     }

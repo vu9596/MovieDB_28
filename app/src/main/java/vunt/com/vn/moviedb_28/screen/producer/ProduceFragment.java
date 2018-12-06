@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.data.model.Company;
 import vunt.com.vn.moviedb_28.databinding.FragmentProduceBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
@@ -22,7 +25,7 @@ public class ProduceFragment extends BaseFragment {
         mBinding = FragmentProduceBinding.bind(view);
         mBinding.setViewModel(mViewModel);
         setupAdapters(mBinding.recyclerProducer,
-                new ProduceAdapter(mViewModel.getMovie().getProductionCompanies()));
+                new ProduceAdapter(new ArrayList<Company>()));
         return view;
     }
 }

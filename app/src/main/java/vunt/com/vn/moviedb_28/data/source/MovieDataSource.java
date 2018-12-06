@@ -2,8 +2,6 @@ package vunt.com.vn.moviedb_28.data.source;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
@@ -26,6 +24,8 @@ public interface MovieDataSource {
         Single<List<Genre>> getGenres();
 
         Single<List<Movie>> getMoviesByGenre(int page, String genreId);
+
+        Single<Movie> getMovieDetail(int movieId, String append);
     }
 
 }

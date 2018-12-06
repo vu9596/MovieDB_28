@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.data.model.Video;
 import vunt.com.vn.moviedb_28.databinding.FragmentTrailerBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
@@ -23,7 +26,7 @@ public class TrailerFragment extends BaseFragment {
         mBinding = FragmentTrailerBinding.bind(view);
         mBinding.setViewModel(mViewModel);
         setupAdapters(mBinding.recyclerTrailer,
-                new TrailerAdapter(mViewModel.getMovie().getVideoResult().getVideos()));
+                new TrailerAdapter(new ArrayList<Video>()));
         return view;
     }
 }
