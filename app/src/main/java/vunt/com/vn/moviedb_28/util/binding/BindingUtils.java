@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
+import vunt.com.vn.moviedb_28.R;
 import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.screen.home.CategoriesAdapter;
@@ -68,5 +70,20 @@ public class BindingUtils {
         if (backdropPath.isEmpty() || backdropPath == null) {
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
+    }
+
+    @BindingAdapter({"app:bindImage"})
+    public static void setRoundedImage(ImageView imageView, String url) {
+        if (url == null || url.isEmpty()) {
+            imageView.setImageResource(R.drawable.ic_my_music);
+            return;
+        }
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_my_music);
+        requestOptions.error(R.drawable.ic_my_music);
+        Glide.with(imageView.getContext())
+                .load(url)
+                .apply(requestOptions.circleCropTransform())
+                .into(imageView);
     }
 }

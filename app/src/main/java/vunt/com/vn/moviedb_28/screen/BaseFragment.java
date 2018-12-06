@@ -8,7 +8,7 @@ import vunt.com.vn.moviedb_28.screen.moviedetail.MovieDetailViewModel;
 public abstract class BaseFragment extends Fragment {
     protected MovieDetailViewModel mViewModel;
 
-    protected void setViewModel(MovieDetailViewModel viewModel) {
+    public void setViewModel(MovieDetailViewModel viewModel) {
         mViewModel = viewModel;
     }
 
