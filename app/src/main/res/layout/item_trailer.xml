@@ -28,14 +28,14 @@
                 android:background="@color/color_brighter_black"
                 android:padding="@dimen/dp_16"
                 android:src="@drawable/ic_play_circle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_4"
-                android:text="@string/trailer_name"
+                android:text="@{viewModel.videoObservable.name}"
                 android:textColor="@color/color_primary"
                 android:textSize="@dimen/dp_16"
                 app:layout_constraintEnd_toEndOf="@id/image_genres"

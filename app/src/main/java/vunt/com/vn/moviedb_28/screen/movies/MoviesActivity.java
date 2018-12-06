@@ -28,7 +28,6 @@ import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.CATEGORY_SOURCE;
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
 
-
 public class MoviesActivity extends AppCompatActivity implements MoviesNavigator,
         CategoriesAdapter.ItemClickListener {
 
