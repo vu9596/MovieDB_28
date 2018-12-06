@@ -24,7 +24,7 @@
 
         <fragment
             android:id="@+id/player"
-            android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+            android:name="vunt.com.vn.moviedb_28.screen.moviedetail.YouTubeVideoFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"

@@ -25,12 +25,15 @@ import vunt.com.vn.moviedb_28.screen.trailers.TrailerFragment;
 
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements OnChangeVideoListener {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
 
     private MovieDetailViewModel mViewModel;
     private ActivityMovieDetailBinding mBinding;
+
+    private YouTubeVideoFragment mYouTubeVideoFragment;
+    private String mMovieId;
 
     public static Intent getMovieDetailIntent(Context context, Movie movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
@@ -43,18 +46,25 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String movieId = getIntent().getBundleExtra(EXTRAS_ARGS).getString(BUNDLE_KEY);
-        mViewModel = new MovieDetailViewModel(Integer.valueOf(movieId),
+        mMovieId = getIntent().getBundleExtra(EXTRAS_ARGS).getString(BUNDLE_KEY);
+        mViewModel = new MovieDetailViewModel(Integer.valueOf(mMovieId),
                 MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
+        mViewModel.setOnChangeVideoListener(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         mBinding.setViewModel(mViewModel);
         initViews();
+        mYouTubeVideoFragment = (YouTubeVideoFragment) getFragmentManager().findFragmentById(R.id.player);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mViewModel.clear();
+    }
+
+    @Override
+    public void setVideoId(String videoId) {
+        mYouTubeVideoFragment.setVideoId(videoId);
     }
 
     private void initViews() {
