@@ -14,7 +14,7 @@ import vunt.com.vn.moviedb_28.data.model.Actor;
 import vunt.com.vn.moviedb_28.databinding.FragmentActorBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
-public class ActorsFragment extends BaseFragment {
+public class ActorsFragment extends BaseFragment implements ActorsAdapter.ItemClickListener {
 
     private FragmentActorBinding mBinding;
 
@@ -25,8 +25,13 @@ public class ActorsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_actor, container, false);
         mBinding = FragmentActorBinding.bind(view);
         mBinding.setViewModel(mViewModel);
-        setupAdapters(mBinding.recyclerActor,
-                new ActorsAdapter(new ArrayList<Actor>()));
+        ActorsAdapter adapter = new ActorsAdapter(new ArrayList<Actor>());
+        adapter.setItemClickListener(this);
+        setupAdapters(mBinding.recyclerActor, adapter);
         return view;
+    }
+
+    @Override
+    public void onActorItemClick(Actor actor) {
     }
 }
