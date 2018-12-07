@@ -14,6 +14,7 @@ import vunt.com.vn.moviedb_28.databinding.ItemTrailerBinding;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
     private List<Video> mVideos;
+    private ItemClickListener mItemClickListener;
 
     public TrailerAdapter(List<Video> videos) {
         mVideos = videos;
@@ -28,7 +29,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
                 viewGroup,
                 false
         );
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, mItemClickListener);
     }
 
     @Override
@@ -41,6 +42,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         return mVideos != null ? mVideos.size() : 0;
     }
 
+    public TrailerAdapter setItemClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+        return this;
+    }
+
     public void replaceData(List<Video> videos) {
         mVideos.clear();
         mVideos.addAll(videos);
@@ -51,10 +57,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         private ItemTrailerBinding mBinding;
         private ItemTrailerViewModel mItemTrailerViewModel;
 
-        public ViewHolder(ItemTrailerBinding binding) {
+        public ViewHolder(ItemTrailerBinding binding, ItemClickListener listener) {
             super(binding.getRoot());
             mBinding = binding;
-            mItemTrailerViewModel = new ItemTrailerViewModel();
+            mItemTrailerViewModel = new ItemTrailerViewModel(listener);
             mBinding.setViewModel(mItemTrailerViewModel);
         }
 
@@ -62,5 +68,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             mItemTrailerViewModel.setTrailer(video);
             mBinding.executePendingBindings();
         }
+    }
+
+    public interface ItemClickListener {
+        void onTrailerItemClick(Video video);
     }
 }

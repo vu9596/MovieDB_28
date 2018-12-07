@@ -14,7 +14,7 @@ import vunt.com.vn.moviedb_28.data.model.Company;
 import vunt.com.vn.moviedb_28.databinding.FragmentProduceBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
-public class ProduceFragment extends BaseFragment {
+public class ProduceFragment extends BaseFragment implements ProduceAdapter.ItemClickListener {
     private FragmentProduceBinding mBinding;
 
     @Nullable
@@ -24,8 +24,13 @@ public class ProduceFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_produce, container, false);
         mBinding = FragmentProduceBinding.bind(view);
         mBinding.setViewModel(mViewModel);
-        setupAdapters(mBinding.recyclerProducer,
-                new ProduceAdapter(new ArrayList<Company>()));
+        ProduceAdapter adapter = new ProduceAdapter(new ArrayList<Company>());
+        adapter.setItemClickListener(this);
+        setupAdapters(mBinding.recyclerProducer, adapter);
         return view;
+    }
+
+    @Override
+    public void onProduceItemClick(Company company) {
     }
 }

@@ -14,6 +14,7 @@ import vunt.com.vn.moviedb_28.databinding.ItemProducerBinding;
 
 public class ProduceAdapter extends RecyclerView.Adapter<ProduceAdapter.ViewHolder> {
     private List<Company> mCompanies;
+    private ItemClickListener mItemClickListener;
 
     public ProduceAdapter(List<Company> companies) {
         mCompanies = companies;
@@ -28,7 +29,7 @@ public class ProduceAdapter extends RecyclerView.Adapter<ProduceAdapter.ViewHold
                 viewGroup,
                 false
         );
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, mItemClickListener);
     }
 
     @Override
@@ -41,6 +42,11 @@ public class ProduceAdapter extends RecyclerView.Adapter<ProduceAdapter.ViewHold
         return mCompanies != null ? mCompanies.size() : 0;
     }
 
+    public ProduceAdapter setItemClickListener(ItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+        return this;
+    }
+
     public void replaceData(List<Company> companies) {
         mCompanies.clear();
         mCompanies.addAll(companies);
@@ -51,10 +57,10 @@ public class ProduceAdapter extends RecyclerView.Adapter<ProduceAdapter.ViewHold
         private ItemProducerBinding mBinding;
         private ItemProduceViewModel mItemProduceViewModel;
 
-        public ViewHolder(ItemProducerBinding binding) {
+        public ViewHolder(ItemProducerBinding binding, ItemClickListener listener) {
             super(binding.getRoot());
             mBinding = binding;
-            mItemProduceViewModel = new ItemProduceViewModel();
+            mItemProduceViewModel = new ItemProduceViewModel(listener);
             mBinding.setViewModel(mItemProduceViewModel);
         }
 
@@ -62,5 +68,9 @@ public class ProduceAdapter extends RecyclerView.Adapter<ProduceAdapter.ViewHold
             mItemProduceViewModel.setCompany(company);
             mBinding.executePendingBindings();
         }
+    }
+
+    public interface ItemClickListener {
+        void onProduceItemClick(Company company);
     }
 }

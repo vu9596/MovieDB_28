@@ -14,16 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vunt.com.vn.moviedb_28.R;
+import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMovieDetailBinding;
 import vunt.com.vn.moviedb_28.screen.actors.ActorsFragment;
+import vunt.com.vn.moviedb_28.screen.movieinfo.GenresDetailAdapter;
 import vunt.com.vn.moviedb_28.screen.movieinfo.InfoFragment;
+import vunt.com.vn.moviedb_28.screen.movies.MoviesActivity;
 import vunt.com.vn.moviedb_28.screen.producer.ProduceFragment;
 import vunt.com.vn.moviedb_28.screen.trailers.TrailerFragment;
 
 import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.BUNDLE_KEY;
+import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.GENRE_SOURCE;
 
 public class MovieDetailActivity extends AppCompatActivity
         implements OnChangeVideoListener, MovieDetailNavigator {
