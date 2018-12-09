@@ -20,6 +20,8 @@ import vunt.com.vn.moviedb_28.data.model.Genre;
 import vunt.com.vn.moviedb_28.data.model.Movie;
 import vunt.com.vn.moviedb_28.data.model.Video;
 import vunt.com.vn.moviedb_28.data.repository.MovieRepository;
+import vunt.com.vn.moviedb_28.data.source.local.FavoriteReaderDbHelper;
+import vunt.com.vn.moviedb_28.data.source.local.MovieLocalDataSource;
 import vunt.com.vn.moviedb_28.data.source.remote.MovieRemoteDataSource;
 import vunt.com.vn.moviedb_28.databinding.ActivityMovieDetailBinding;
 import vunt.com.vn.moviedb_28.screen.actors.ActorsFragment;
@@ -56,11 +58,7 @@ public class MovieDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMovieId = getIntent().getBundleExtra(EXTRAS_ARGS).getString(BUNDLE_KEY);
-        mViewModel = new MovieDetailViewModel(Integer.valueOf(mMovieId),
-                MovieRepository.getInstance(MovieRemoteDataSource.getInstance()));
-        mViewModel.setOnChangeVideoListener(this);
-        mViewModel.setNavigator(this);
+        initViewModel();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         mBinding.setViewModel(mViewModel);
         initViews();
@@ -123,6 +121,7 @@ public class MovieDetailActivity extends AppCompatActivity
         startActivity(MoviesActivity.getMoviesIntent(this, genre, getBy));
     }
 
+    @Override
     public void onProduceSelected(Company company) {
         showMovies(company, PRODUCE_SOURCE);
     }
@@ -165,5 +164,15 @@ public class MovieDetailActivity extends AppCompatActivity
             mFragments.add(fragment);
             mTitles.add(title);
         }
+    }
+
+    private void initViewModel() {
+        FavoriteReaderDbHelper dbHelper = new FavoriteReaderDbHelper(this);
+        mMovieId = getIntent().getBundleExtra(EXTRAS_ARGS).getString(BUNDLE_KEY);
+        mViewModel = new MovieDetailViewModel(Integer.valueOf(mMovieId),
+                MovieRepository.getInstance(MovieRemoteDataSource.getInstance(),
+                        MovieLocalDataSource.getInstance(dbHelper)));
+        mViewModel.setOnChangeVideoListener(this);
+        mViewModel.setNavigator(this);
     }
 }
