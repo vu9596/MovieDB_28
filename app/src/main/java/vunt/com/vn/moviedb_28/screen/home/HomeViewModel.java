@@ -4,7 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableList;
-import android.os.Bundle;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class HomeViewModel extends BaseObservable {
     public static final String BUNDLE_NAME = "BUNDLE_NAME";
     public static final int GENRE_SOURCE = 0;
     public static final int CATEGORY_SOURCE = 1;
+    public static final int PRODUCE_SOURCE = 2;
 
     public ObservableBoolean mIsLoadMorePopular = new ObservableBoolean();
     public ObservableBoolean mIsLoadMoreNowPlaying = new ObservableBoolean();

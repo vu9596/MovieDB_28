@@ -1,5 +1,6 @@
 package vunt.com.vn.moviedb_28.screen.producer;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +15,20 @@ import vunt.com.vn.moviedb_28.data.model.Company;
 import vunt.com.vn.moviedb_28.databinding.FragmentProduceBinding;
 import vunt.com.vn.moviedb_28.screen.BaseFragment;
 
-public class ProduceFragment extends BaseFragment implements ProduceAdapter.ItemClickListener {
+public class ProduceFragment extends BaseFragment
+        implements ProduceAdapter.ItemClickListener {
     private FragmentProduceBinding mBinding;
+    private OnProduceSelectedListener mListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnProduceSelectedListener) context;
+        } catch (ClassCastException e) {
+            handleError(e.getMessage());
+        }
+    }
 
     @Nullable
     @Override
@@ -32,5 +45,14 @@ public class ProduceFragment extends BaseFragment implements ProduceAdapter.Item
 
     @Override
     public void onProduceItemClick(Company company) {
+        mListener.onProduceSelected(company);
+    }
+
+    public interface OnProduceSelectedListener {
+        public void onProduceSelected(Company company);
+    }
+
+    private void handleError(String message) {
+        //TODO handle error
     }
 }
