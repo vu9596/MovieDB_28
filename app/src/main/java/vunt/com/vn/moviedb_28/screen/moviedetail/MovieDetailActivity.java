@@ -34,7 +34,8 @@ import static vunt.com.vn.moviedb_28.screen.home.HomeViewModel.PRODUCE_SOURCE;
 
 public class MovieDetailActivity extends AppCompatActivity
         implements OnChangeVideoListener, MovieDetailNavigator,
-        ProduceFragment.OnProduceSelectedListener, ActorsFragment.OnActorSelectedListener {
+        ProduceFragment.OnProduceSelectedListener, ActorsFragment.OnActorSelectedListener,
+        TrailerFragment.OnTrailerSelectedListener {
 
     private static final String EXTRAS_ARGS = "vunt.com.vn.moviedb_28.extras.EXTRAS_ARGS";
 
@@ -63,7 +64,8 @@ public class MovieDetailActivity extends AppCompatActivity
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         mBinding.setViewModel(mViewModel);
         initViews();
-        mYouTubeVideoFragment = (YouTubeVideoFragment) getFragmentManager().findFragmentById(R.id.player);
+        mYouTubeVideoFragment =
+                (YouTubeVideoFragment) getFragmentManager().findFragmentById(R.id.player);
     }
 
     @Override
@@ -121,12 +123,6 @@ public class MovieDetailActivity extends AppCompatActivity
         startActivity(MoviesActivity.getMoviesIntent(this, genre, getBy));
     }
 
-    @Override
-    public void showMovies(Video video, int getBy) {
-
-    }
-
-    @Override
     public void onProduceSelected(Company company) {
         showMovies(company, PRODUCE_SOURCE);
     }
@@ -134,6 +130,12 @@ public class MovieDetailActivity extends AppCompatActivity
     @Override
     public void onActorSelected(Actor actor) {
         showMovies(actor, ACTOR_SOURCE);
+    }
+
+    @Override
+    public void onTrailerSelected(Video video) {
+        setVideoId(video.getKey());
+        mYouTubeVideoFragment.playVideo();
     }
 
     public static class MainPagerAdapter extends FragmentPagerAdapter {
