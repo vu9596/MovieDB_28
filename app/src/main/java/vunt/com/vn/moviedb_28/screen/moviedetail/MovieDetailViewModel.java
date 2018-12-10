@@ -1,5 +1,6 @@
 package vunt.com.vn.moviedb_28.screen.moviedetail;
 
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,6 +15,9 @@ import vunt.com.vn.moviedb_28.screen.producer.ProduceNavigator;
 public class MovieDetailViewModel {
     private static final String APPEND_TO_MOVIE_DETAIL = "videos,credits";
     public final ObservableField<Movie> movieObservable = new ObservableField<>();
+
+    public final ObservableBoolean isFavoriteMovieObservable = new ObservableBoolean();
+
     private MovieRepository mMovieRepository;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -26,6 +30,7 @@ public class MovieDetailViewModel {
     public MovieDetailViewModel(int movieId, MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
         loadMovie(movieId);
+        checkFavoriteMovie(movieId);
     }
 
     public void setNavigator(MovieDetailNavigator navigator) {
@@ -74,7 +79,36 @@ public class MovieDetailViewModel {
         mMovieDetailNavigator.back();
     }
 
+    private void checkFavoriteMovie(int movieId) {
+        isFavoriteMovieObservable.set(!mMovieRepository.canAddFavarite(movieId));
+    }
+
     public void clear() {
         mCompositeDisposable.clear();
+    }
+
+    public void onFavoriteClick(Movie movie) {
+        if (movie == null) {
+            return;
+        }
+        if (isFavoriteMovieObservable.get()) {
+            deleteFavoriteMovie(movie);
+            return;
+        }
+        adddFavoriteMovie(movie);
+    }
+
+    private void adddFavoriteMovie(Movie movie) {
+        boolean isSuccess = mMovieRepository.addFavariteMovie(movie);
+        if (isSuccess) {
+            isFavoriteMovieObservable.set(true);
+        }
+    }
+
+    private void deleteFavoriteMovie(Movie movie) {
+        boolean isSuccess = mMovieRepository.deleteFavoriteMovie(movie);
+        if (isSuccess) {
+            isFavoriteMovieObservable.set(false);
+        }
     }
 }

@@ -3,6 +3,7 @@ package vunt.com.vn.moviedb_28.screen.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -12,6 +13,7 @@ import vunt.com.vn.moviedb_28.screen.home.HomeFragment;
 import vunt.com.vn.moviedb_28.util.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
+    private Fragment mCurrentFrgment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigationView();
         ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                 new HomeFragment(), R.id.frame_fragments_container);
+    }
+
+    @Override
+    protected void onStart() {
+        if (mCurrentFrgment != null && mCurrentFrgment instanceof FavoriteFragment) {
+            ((FavoriteFragment) mCurrentFrgment).getViewModel().refreshFavoriteMovies();
+        }
+        super.onStart();
     }
 
     private void setupBottomNavigationView() {
@@ -36,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.navigation_home:
+                                mCurrentFrgment = HomeFragment.newInstance();
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                                        new HomeFragment(), R.id.frame_fragments_container);
+                                        mCurrentFrgment, R.id.frame_fragments_container);
                                 break;
                             case R.id.navigation_my_fovorities:
+                                mCurrentFrgment = FavoriteFragment.newInstance();
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                                        new FavoriteFragment(), R.id.frame_fragments_container);
+                                        mCurrentFrgment, R.id.frame_fragments_container);
                             case R.id.navigation_my_search:
                                 break;
                             default:

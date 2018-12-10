@@ -9,13 +9,15 @@ import vunt.com.vn.moviedb_28.data.model.Movie;
 public interface MovieDataSource {
 
     interface Local extends MovieDataSource {
-        Single<List<Movie>> getFavoriteMovies();
+        List<Movie> getFavoriteMovies();
 
         boolean addFavariteMovie(Movie movie);
 
         boolean deleteFavoriteMovie(Movie movie);
 
         boolean canAddFavarite(Movie movie);
+
+        boolean canAddFavarite(int movieId);
     }
 
     interface Remote extends MovieDataSource {
