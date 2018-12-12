@@ -25,5 +25,7 @@
             android:name=".screen.moviedetail.MovieDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/MovieDetail" />
+        <activity android:name=".screen.searchfilter.SearchFilterActivity" />
     </application>
+
 </manifest>
