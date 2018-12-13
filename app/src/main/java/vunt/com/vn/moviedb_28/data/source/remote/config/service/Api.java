@@ -35,9 +35,14 @@ public interface Api {
 
     @GET("/3/discover/movie")
     Single<CategoryResult> getMoviesByProduce(@Query("page") int page,
-                                            @Query("with_companies") String companyId);
+                                              @Query("with_companies") String companyId);
 
     @GET("/3/discover/movie")
     Single<CategoryResult> getMoviesByActor(@Query("page") int page,
-                                              @Query("with_cast") String actorId);
+                                            @Query("with_cast") String actorId);
+
+    @GET("/3/search/{type}")
+    Single<CategoryResult> searchMovie(@Path("type") String type,
+                                       @Query("query") String keyword,
+                                       @Query("page") int page);
 }

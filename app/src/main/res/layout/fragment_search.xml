@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="vunt.com.vn.moviedb_28.screen.search.SearchViewModel" />
@@ -36,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
-            android:text="@string/default_search_result"
+            android:text="@{String.valueOf(viewModel.totalResultObservable)}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dp_14"
             app:layout_constraintBottom_toBottomOf="@id/view_result"
@@ -58,11 +60,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_16"
+            android:onClick="@{() -> viewModel.onFilterClick()}"
             android:src="@drawable/ic_filter_list_black_24dp"
             app:layout_constraintBottom_toBottomOf="@id/view_result"
             app:layout_constraintEnd_toEndOf="@id/view_result"
-            app:layout_constraintTop_toTopOf="@id/view_result"
-            android:onClick="@{() -> viewModel.onFilterClick()}"/>
+            app:layout_constraintTop_toTopOf="@id/view_result" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_search"
@@ -73,11 +75,20 @@
             android:layout_marginEnd="@dimen/dp_16"
             android:layout_marginBottom="@dimen/dp_8"
             app:bindMovies="@{viewModel.searchedMoviesObservable}"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/proress_load_more"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_result"
             app:layout_constraintVertical_bias="0" />
+
+        <ProgressBar
+            android:id="@+id/proress_load_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isLoadMore ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_search" />
     </android.support.constraint.ConstraintLayout>
 </layout>
