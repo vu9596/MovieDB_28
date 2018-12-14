@@ -75,9 +75,7 @@ public class SearchFragment extends Fragment
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search,
                 container, false);
         mBinding.setViewModel(mViewModel);
-
         setupAdapters();
-
         setupSearchView();
         return mBinding.getRoot();
     }
@@ -131,7 +129,6 @@ public class SearchFragment extends Fragment
         mSearchAdapter = new CategoriesAdapter(new ArrayList<Movie>(0));
         mSearchAdapter.setItemClickListener(this);
         searchRecycler.setAdapter(mSearchAdapter);
-
         setupScrollListener(searchRecycler);
     }
 
