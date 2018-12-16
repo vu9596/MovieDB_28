@@ -50,6 +50,8 @@ public class HomeViewModel extends BaseObservable {
 
     private HomeNavigator mNavigator;
 
+    public final ObservableBoolean isLoadingSuccess = new ObservableBoolean();
+
     public HomeViewModel(MovieRepository movieRepository) {
         mMovieRepository = movieRepository;
         initData();
@@ -75,6 +77,7 @@ public class HomeViewModel extends BaseObservable {
                     @Override
                     public void accept(List<Genre> genres) {
                         genresObservable.addAll(genres);
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -202,7 +205,7 @@ public class HomeViewModel extends BaseObservable {
     }
 
     private void handleError(String message) {
-        //TODO handle error
+        isLoadingSuccess.set(true);
     }
 
     public void onCategoryClick(View view, String key, String name) {

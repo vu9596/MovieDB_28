@@ -1,5 +1,7 @@
 package vunt.com.vn.moviedb_28.screen.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +17,10 @@ import vunt.com.vn.moviedb_28.util.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
     private Fragment mCurrentFrgment;
+
+    public static Intent getMainActivityIntent(Context context) {
+        return new Intent(context, MainActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

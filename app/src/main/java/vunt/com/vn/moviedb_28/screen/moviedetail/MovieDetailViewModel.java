@@ -18,6 +18,8 @@ public class MovieDetailViewModel {
 
     public final ObservableBoolean isFavoriteMovieObservable = new ObservableBoolean();
 
+    public final ObservableBoolean isLoadingSuccess = new ObservableBoolean();
+
     private MovieRepository mMovieRepository;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
@@ -57,6 +59,7 @@ public class MovieDetailViewModel {
                             mOnChangeVideoListener.setVideoId(
                                     movie.getVideoResult().getVideos().get(0).getKey());
                         }
+                        isLoadingSuccess.set(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -72,7 +75,7 @@ public class MovieDetailViewModel {
     }
 
     private void handleError(String message) {
-        //TODO handle error
+        isLoadingSuccess.set(true);
     }
 
     public void back() {
